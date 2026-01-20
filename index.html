@@ -2,140 +2,197 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Padel Match Entry</title>
+
   <style>
+    :root {
+      --primary: #1f7a8c;
+      --secondary: #022b3a;
+      --bg: #f4f7f9;
+      --card: #ffffff;
+      --accent: #e63946;
+    }
+
+    * {
+      box-sizing: border-box;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont;
+    }
+
     body {
-      font-family: Arial, sans-serif;
+      margin: 0;
+      background: var(--bg);
+      color: #333;
+      padding-bottom: 100px;
+    }
+
+    header {
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      color: white;
+      padding: 20px;
+      text-align: center;
+      font-size: 1.4rem;
+      font-weight: 600;
+    }
+
+    .container {
       max-width: 900px;
-      margin: 20px auto;
+      margin: auto;
+      padding: 16px;
     }
-    fieldset {
-      margin-bottom: 20px;
-      padding: 15px;
+
+    .card {
+      background: var(--card);
+      border-radius: 14px;
+      padding: 16px;
+      margin-bottom: 16px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.06);
     }
+
+    h2, h3 {
+      margin: 0 0 12px;
+    }
+
     label {
+      font-size: 0.9rem;
+      margin-top: 10px;
       display: block;
-      margin-top: 8px;
     }
-    select, input, button {
+
+    select, input {
+      width: 100%;
+      padding: 10px;
       margin-top: 4px;
+      border-radius: 10px;
+      border: 1px solid #ccc;
+      font-size: 1rem;
     }
-    .row {
-      display: flex;
-      gap: 20px;
-      flex-wrap: wrap;
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
     }
-    .col {
-      flex: 1;
-      min-width: 250px;
+
+    .grid-4 {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+    }
+
+    .btn {
+      background: var(--primary);
+      color: white;
+      border: none;
+      padding: 14px;
+      border-radius: 14px;
+      font-size: 1.1rem;
+      cursor: pointer;
+      width: 100%;
+    }
+
+    .btn.secondary {
+      background: #ddd;
+      color: #333;
+    }
+
+    .sticky-submit {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: white;
+      padding: 12px;
+      box-shadow: 0 -5px 20px rgba(0,0,0,0.15);
+    }
+
+    @media (min-width: 768px) {
+      .sticky-submit {
+        position: static;
+        box-shadow: none;
+        padding: 0;
+      }
     }
   </style>
 </head>
+
 <body>
 
-<h2>Padel Doubles Match Entry</h2>
+<header>🎾 Padel Match Entry</header>
 
-<form id="matchForm">
+<div class="container">
 
-  <!-- Players -->
-  <fieldset>
-    <legend>Players</legend>
-
-    <div class="row">
-      <div class="col">
-        <strong>Team A</strong>
-        <label>Player A1
-          <select class="playerSelect" name="teamA_player1"></select>
-        </label>
-        <label>Player A2
-          <select class="playerSelect" name="teamA_player2"></select>
-        </label>
-      </div>
-
-      <div class="col">
-        <strong>Team B</strong>
-        <label>Player B1
-          <select class="playerSelect" name="teamB_player1"></select>
-        </label>
-        <label>Player B2
-          <select class="playerSelect" name="teamB_player2"></select>
-        </label>
-      </div>
+  <!-- Add Player -->
+  <div class="card">
+    <h3>Add New Player</h3>
+    <div class="grid-2">
+      <input type="text" id="newPlayer" placeholder="Player name">
+      <button class="btn secondary" onclick="addPlayer()">Add</button>
     </div>
+  </div>
 
-    <label>
-      Add new player:
-      <input type="text" id="newPlayerName" />
-      <button type="button" onclick="addPlayer()">Add</button>
-    </label>
-  </fieldset>
+  <!-- Team A -->
+  <div class="card">
+    <h2>Team A</h2>
+    <label>Player 1</label>
+    <select class="player"></select>
 
-  <!-- Set Scores -->
-  <fieldset>
-    <legend>Match Scores</legend>
+    <label>Player 2</label>
+    <select class="player"></select>
 
-    <h4>Set 1</h4>
-    <div class="row">
-      <div class="col">
-        Team A Games:
-        <select name="set1_teamA" class="score7"></select>
-        Tie-break:
-        <select name="set1_tbA" class="score20"></select>
-      </div>
-      <div class="col">
-        Team B Games:
-        <select name="set1_teamB" class="score7"></select>
-        Tie-break:
-        <select name="set1_tbB" class="score20"></select>
-      </div>
+    <label>Killer Points</label>
+    <select id="killerA"></select>
+  </div>
+
+  <!-- Team B -->
+  <div class="card">
+    <h2>Team B</h2>
+    <label>Player 1</label>
+    <select class="player"></select>
+
+    <label>Player 2</label>
+    <select class="player"></select>
+
+    <label>Killer Points</label>
+    <select id="killerB"></select>
+  </div>
+
+  <!-- Set 1 -->
+  <div class="card">
+    <h3>Set 1</h3>
+    <div class="grid-4">
+      <select id="s1a"></select>
+      <select id="s1b"></select>
+      <input id="s1tba" placeholder="TB A">
+      <input id="s1tbb" placeholder="TB B">
     </div>
+  </div>
 
-    <h4>Set 2</h4>
-    <div class="row">
-      <div class="col">
-        Team A Games:
-        <select name="set2_teamA" class="score7"></select>
-        Tie-break:
-        <select name="set2_tbA" class="score20"></select>
-      </div>
-      <div class="col">
-        Team B Games:
-        <select name="set2_teamB" class="score7"></select>
-        Tie-break:
-        <select name="set2_tbB" class="score20"></select>
-      </div>
+  <!-- Set 2 -->
+  <div class="card">
+    <h3>Set 2</h3>
+    <div class="grid-4">
+      <select id="s2a"></select>
+      <select id="s2b"></select>
+      <input id="s2tba" placeholder="TB A">
+      <input id="s2tbb" placeholder="TB B">
     </div>
+  </div>
 
-    <h4>Set 3 – Championship Tie-break</h4>
-    <div class="row">
-      <div class="col">
-        Team A:
-        <select name="set3_teamA" class="score20"></select>
-      </div>
-      <div class="col">
-        Team B:
-        <select name="set3_teamB" class="score20"></select>
-      </div>
+  <!-- Championship TB -->
+  <div class="card">
+    <h3>Championship Tie Break</h3>
+    <div class="grid-2">
+      <select id="s3a"></select>
+      <select id="s3b"></select>
     </div>
-  </fieldset>
+  </div>
 
-  <!-- Killer Points -->
-  <fieldset>
-    <legend>Killer Points</legend>
-    <div class="row">
-      <div class="col">
-        Team A:
-        <select name="killerA" class="score20"></select>
-      </div>
-      <div class="col">
-        Team B:
-        <select name="killerB" class="score20"></select>
-      </div>
-    </div>
-  </fieldset>
+</div>
 
-  <button type="submit">Submit Match</button>
-</form>
+<div class="sticky-submit">
+  <button class="btn" onclick="submitMatch()">Submit Match</button>
+</div>
 
 <script>
   // Initial player list
@@ -312,6 +369,7 @@
 </body>
 
 </html>
+
 
 
 
