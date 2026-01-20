@@ -46,10 +46,15 @@
       box-shadow: 0 10px 25px rgba(0,0,0,0.06);
     }
 
+    h3 {
+      margin-bottom: 10px;
+    }
+
     label {
       display: block;
       margin-top: 10px;
       font-size: 0.9rem;
+      font-weight: 600;
     }
 
     select, input {
@@ -103,6 +108,7 @@
 <form id="matchForm">
 <div class="container">
 
+  <!-- Add Player -->
   <div class="card">
     <h3>Add New Player</h3>
     <div class="grid-2">
@@ -111,48 +117,69 @@
     </div>
   </div>
 
+  <!-- Teams -->
   <div class="card">
-    <h2>Team A</h2>
+    <h3>Team A</h3>
     <select class="player"></select>
     <select class="player"></select>
-    <label>Killer Points</label>
-    <select id="killerA" class="score20"></select>
   </div>
 
   <div class="card">
-    <h2>Team B</h2>
+    <h3>Team B</h3>
     <select class="player"></select>
     <select class="player"></select>
-    <label>Killer Points</label>
-    <select id="killerB" class="score20"></select>
   </div>
 
+  <!-- Set 1 -->
   <div class="card">
     <h3>Set 1</h3>
-    <div class="grid-4">
-      <select id="s1a" class="score7"></select>
-      <select id="s1b" class="score7"></select>
-      <input id="s1tba" placeholder="TB A">
-      <input id="s1tbb" placeholder="TB B">
-    </div>
+    <label>Team A Games</label>
+    <select id="s1a" class="score7"></select>
+
+    <label>Team B Games</label>
+    <select id="s1b" class="score7"></select>
+
+    <label>Team A Tie Break</label>
+    <select id="s1tba" class="score20"></select>
+
+    <label>Team B Tie Break</label>
+    <select id="s1tbb" class="score20"></select>
   </div>
 
+  <!-- Set 2 -->
   <div class="card">
     <h3>Set 2</h3>
-    <div class="grid-4">
-      <select id="s2a" class="score7"></select>
-      <select id="s2b" class="score7"></select>
-      <input id="s2tba" placeholder="TB A">
-      <input id="s2tbb" placeholder="TB B">
-    </div>
+    <label>Team A Games</label>
+    <select id="s2a" class="score7"></select>
+
+    <label>Team B Games</label>
+    <select id="s2b" class="score7"></select>
+
+    <label>Team A Tie Break</label>
+    <select id="s2tba" class="score20"></select>
+
+    <label>Team B Tie Break</label>
+    <select id="s2tbb" class="score20"></select>
   </div>
 
+  <!-- Championship TB -->
   <div class="card">
     <h3>Championship Tie Break</h3>
-    <div class="grid-2">
-      <select id="s3a" class="score20"></select>
-      <select id="s3b" class="score20"></select>
-    </div>
+    <label>Team A</label>
+    <select id="s3a" class="score20"></select>
+
+    <label>Team B</label>
+    <select id="s3b" class="score20"></select>
+  </div>
+
+  <!-- Killer Points -->
+  <div class="card">
+    <h3>Killer Points</h3>
+    <label>Team A</label>
+    <select id="killerA" class="score20"></select>
+
+    <label>Team B</label>
+    <select id="killerB" class="score20"></select>
   </div>
 
 </div>
@@ -163,7 +190,7 @@
 </form>
 
 <script>
-  let players = [
+ let players = [
   "Substitute Played",
   "Adrian Muica",
   "Alessandro Di Leo",
@@ -274,7 +301,7 @@
   "Zara Thompson",
   "Zoe Burnet"
 ];
-
+  
   function populatePlayers() {
     document.querySelectorAll(".player").forEach(sel => {
       sel.innerHTML = "";
@@ -311,12 +338,12 @@
       s3: [s3a.value, s3b.value]
     };
 
-    fetch("https://script.google.com/macros/s/AKfycbxl32yg7Qg6Yqnhgc97OC8PVUieAgh8HgjNwsnY-eJEB7oJwevv3D9h-K_aKNvlrCIs8A/exec", {
+     fetch("https://script.google.com/macros/s/AKfycbxl32yg7Qg6Yqnhgc97OC8PVUieAgh8HgjNwsnY-eJEB7oJwevv3D9h-K_aKNvlrCIs8A/exec", {
       method: "POST",
       mode: "no-cors",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data)
-    }).then(() => alert("Match submitted"));
+    }).then(() => alert("Match submitted successfully"));
   });
 
   populatePlayers();
