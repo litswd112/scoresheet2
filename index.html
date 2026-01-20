@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Padel Match Entry</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 900px;
+      margin: 20px auto;
+    }
+    fieldset {
+      margin-bottom: 20px;
+      padding: 15px;
+    }
+    label {
+      display: block;
+      margin-top: 8px;
+    }
+    select, input, button {
+      margin-top: 4px;
+    }
+    .row {
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+    .col {
+      flex: 1;
+      min-width: 250px;
+    }
+  </style>
+</head>
+<body>
+
+<h2>Padel Doubles Match Entry</h2>
+
+<form id="matchForm">
+
+  <!-- Players -->
+  <fieldset>
+    <legend>Players</legend>
+
+    <div class="row">
+      <div class="col">
+        <strong>Team A</strong>
+        <label>Player A1
+          <select class="playerSelect" name="teamA_player1"></select>
+        </label>
+        <label>Player A2
+          <select class="playerSelect" name="teamA_player2"></select>
+        </label>
+      </div>
+
+      <div class="col">
+        <strong>Team B</strong>
+        <label>Player B1
+          <select class="playerSelect" name="teamB_player1"></select>
+        </label>
+        <label>Player B2
+          <select class="playerSelect" name="teamB_player2"></select>
+        </label>
+      </div>
+    </div>
+
+    <label>
+      Add new player:
+      <input type="text" id="newPlayerName" />
+      <button type="button" onclick="addPlayer()">Add</button>
+    </label>
+  </fieldset>
+
+  <!-- Set Scores -->
+  <fieldset>
+    <legend>Match Scores</legend>
+
+    <h4>Set 1</h4>
+    <div class="row">
+      <div class="col">
+        Team A Games:
+        <select name="set1_teamA" class="score7"></select>
+        Tie-break:
+        <select name="set1_tbA" class="score20"></select>
+      </div>
+      <div class="col">
+        Team B Games:
+        <select name="set1_teamB" class="score7"></select>
+        Tie-break:
+        <select name="set1_tbB" class="score20"></select>
+      </div>
+    </div>
+
+    <h4>Set 2</h4>
+    <div class="row">
+      <div class="col">
+        Team A Games:
+        <select name="set2_teamA" class="score7"></select>
+        Tie-break:
+        <select name="set2_tbA" class="score20"></select>
+      </div>
+      <div class="col">
+        Team B Games:
+        <select name="set2_teamB" class="score7"></select>
+        Tie-break:
+        <select name="set2_tbB" class="score20"></select>
+      </div>
+    </div>
+
+    <h4>Set 3 – Championship Tie-break</h4>
+    <div class="row">
+      <div class="col">
+        Team A:
+        <select name="set3_teamA" class="score20"></select>
+      </div>
+      <div class="col">
+        Team B:
+        <select name="set3_teamB" class="score20"></select>
+      </div>
+    </div>
+  </fieldset>
+
+  <!-- Killer Points -->
+  <fieldset>
+    <legend>Killer Points</legend>
+    <div class="row">
+      <div class="col">
+        Team A:
+        <select name="killerA" class="score20"></select>
+      </div>
+      <div class="col">
+        Team B:
+        <select name="killerB" class="score20"></select>
+      </div>
+    </div>
+  </fieldset>
+
+  <button type="submit">Submit Match</button>
+</form>
+
+<script>
+  // Initial player list
+  let players = ["Player 1", "Player 2", "Player 3", "Player 4"];
+
+  function populatePlayers() {
+    document.querySelectorAll(".playerSelect").forEach(select => {
+      select.innerHTML = "";
+      players.forEach(p => {
+        const opt = document.createElement("option");
+        opt.value = p;
+        opt.textContent = p;
+        select.appendChild(opt);
+      });
+    });
+  }
+
+  function populateScores() {
+    document.querySelectorAll(".score7").forEach(sel => {
+      for (let i = 0; i <= 7; i++) {
+        sel.appendChild(new Option(i, i));
+      }
+    });
+
+    document.querySelectorAll(".score20").forEach(sel => {
+      sel.appendChild(new Option("", ""));
+      for (let i = 0; i <= 20; i++) {
+        sel.appendChild(new Option(i, i));
+      }
+    });
+  }
+
+  function addPlayer() {
+    const input = document.getElementById("newPlayerName");
+    if (input.value.trim()) {
+      players.push(input.value.trim());
+      populatePlayers();
+      input.value = "";
+    }
+  }
+
+  document.getElementById("matchForm").addEventListener("submit", function(e) {
+    e.preventDefault();
+
+    const data = Object.fromEntries(new FormData(this).entries());
+
+    fetch("https://script.google.com/macros/s/AKfycbxDt1ejteE2bpEtgmrw_22ol4xNCSHw_NT65fPiRObdJ1c21yrtaTGjH8arfwDOxttGoQ/exec", {
+      method: "POST",
+      body: JSON.stringify(data),
+      headers: { "Content-Type": "application/json" }
+    })
+    .then(() => alert("Match submitted"))
+    .catch(() => alert("Submission failed"));
+  });
+
+  populatePlayers();
+  populateScores();
+</script>
+
+</body>
+</html>
