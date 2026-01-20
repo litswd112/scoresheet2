@@ -11,18 +11,16 @@
       --secondary: #022b3a;
       --bg: #f4f7f9;
       --card: #ffffff;
-      --accent: #e63946;
     }
 
     * {
       box-sizing: border-box;
-      font-family: system-ui, -apple-system, BlinkMacSystemFont;
+      font-family: system-ui, -apple-system;
     }
 
     body {
       margin: 0;
       background: var(--bg);
-      color: #333;
       padding-bottom: 100px;
     }
 
@@ -32,7 +30,6 @@
       padding: 20px;
       text-align: center;
       font-size: 1.4rem;
-      font-weight: 600;
     }
 
     .container {
@@ -49,14 +46,10 @@
       box-shadow: 0 10px 25px rgba(0,0,0,0.06);
     }
 
-    h2, h3 {
-      margin: 0 0 12px;
-    }
-
     label {
-      font-size: 0.9rem;
-      margin-top: 10px;
       display: block;
+      margin-top: 10px;
+      font-size: 0.9rem;
     }
 
     select, input {
@@ -68,17 +61,8 @@
       font-size: 1rem;
     }
 
-    .grid-2 {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 12px;
-    }
-
-    .grid-4 {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 12px;
-    }
+    .grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+    .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
 
     .btn {
       background: var(--primary);
@@ -107,11 +91,7 @@
     }
 
     @media (min-width: 768px) {
-      .sticky-submit {
-        position: static;
-        box-shadow: none;
-        padding: 0;
-      }
+      .sticky-submit { position: static; box-shadow: none; padding: 0; }
     }
   </style>
 </head>
@@ -120,82 +100,69 @@
 
 <header>🎾 Padel Match Entry</header>
 
+<form id="matchForm">
 <div class="container">
 
-  <!-- Add Player -->
   <div class="card">
     <h3>Add New Player</h3>
     <div class="grid-2">
       <input type="text" id="newPlayer" placeholder="Player name">
-      <button class="btn secondary" onclick="addPlayer()">Add</button>
+      <button type="button" class="btn secondary" onclick="addPlayer()">Add</button>
     </div>
   </div>
 
-  <!-- Team A -->
   <div class="card">
     <h2>Team A</h2>
-    <label>Player 1</label>
     <select class="player"></select>
-
-    <label>Player 2</label>
     <select class="player"></select>
-
     <label>Killer Points</label>
-    <select id="killerA"></select>
+    <select id="killerA" class="score20"></select>
   </div>
 
-  <!-- Team B -->
   <div class="card">
     <h2>Team B</h2>
-    <label>Player 1</label>
     <select class="player"></select>
-
-    <label>Player 2</label>
     <select class="player"></select>
-
     <label>Killer Points</label>
-    <select id="killerB"></select>
+    <select id="killerB" class="score20"></select>
   </div>
 
-  <!-- Set 1 -->
   <div class="card">
     <h3>Set 1</h3>
     <div class="grid-4">
-      <select id="s1a"></select>
-      <select id="s1b"></select>
+      <select id="s1a" class="score7"></select>
+      <select id="s1b" class="score7"></select>
       <input id="s1tba" placeholder="TB A">
       <input id="s1tbb" placeholder="TB B">
     </div>
   </div>
 
-  <!-- Set 2 -->
   <div class="card">
     <h3>Set 2</h3>
     <div class="grid-4">
-      <select id="s2a"></select>
-      <select id="s2b"></select>
+      <select id="s2a" class="score7"></select>
+      <select id="s2b" class="score7"></select>
       <input id="s2tba" placeholder="TB A">
       <input id="s2tbb" placeholder="TB B">
     </div>
   </div>
 
-  <!-- Championship TB -->
   <div class="card">
     <h3>Championship Tie Break</h3>
     <div class="grid-2">
-      <select id="s3a"></select>
-      <select id="s3b"></select>
+      <select id="s3a" class="score20"></select>
+      <select id="s3b" class="score20"></select>
     </div>
   </div>
 
 </div>
 
 <div class="sticky-submit">
-  <button class="btn" onclick="submitMatch()">Submit Match</button>
+  <button class="btn" type="submit">Submit Match</button>
 </div>
+</form>
 
 <script>
-  // Initial player list
   let players = [
   "Substitute Played",
   "Adrian Muica",
@@ -309,57 +276,47 @@
 ];
 
   function populatePlayers() {
-    document.querySelectorAll(".playerSelect").forEach(select => {
-      select.innerHTML = "";
-      players.forEach(p => {
-        const opt = document.createElement("option");
-        opt.value = p;
-        opt.textContent = p;
-        select.appendChild(opt);
-      });
+    document.querySelectorAll(".player").forEach(sel => {
+      sel.innerHTML = "";
+      players.forEach(p => sel.appendChild(new Option(p, p)));
     });
   }
 
   function populateScores() {
     document.querySelectorAll(".score7").forEach(sel => {
-      for (let i = 0; i <= 7; i++) {
-        sel.appendChild(new Option(i, i));
-      }
+      for (let i = 0; i <= 7; i++) sel.appendChild(new Option(i, i));
     });
-
     document.querySelectorAll(".score20").forEach(sel => {
-      sel.appendChild(new Option("", ""));
-      for (let i = 0; i <= 20; i++) {
-        sel.appendChild(new Option(i, i));
-      }
+      for (let i = 0; i <= 20; i++) sel.appendChild(new Option(i, i));
     });
   }
 
   function addPlayer() {
-    const input = document.getElementById("newPlayerName");
-    if (input.value.trim()) {
-      players.push(input.value.trim());
-      populatePlayers();
-      input.value = "";
-    }
+    const input = document.getElementById("newPlayer");
+    if (!input.value.trim()) return;
+    players.push(input.value.trim());
+    populatePlayers();
+    input.value = "";
   }
 
   document.getElementById("matchForm").addEventListener("submit", function(e) {
     e.preventDefault();
 
-    const data = Object.fromEntries(new FormData(this).entries());
+    const data = {
+      players: [...document.querySelectorAll(".player")].map(p => p.value),
+      killerA: killerA.value,
+      killerB: killerB.value,
+      s1: [s1a.value, s1b.value, s1tba.value, s1tbb.value],
+      s2: [s2a.value, s2b.value, s2tba.value, s2tbb.value],
+      s3: [s3a.value, s3b.value]
+    };
 
-  fetch("https://script.google.com/macros/s/AKfycbxl32yg7Qg6Yqnhgc97OC8PVUieAgh8HgjNwsnY-eJEB7oJwevv3D9h-K_aKNvlrCIs8A/exec", {
-  method: "POST",
-  mode: "no-cors",
-  headers: {
-    "Content-Type": "application/json"
-  },
-  body: JSON.stringify(data)
-})
-.then(() => alert("Match submitted successfully"))
-.catch(err => alert("Submission failed"));
-
+    fetch("https://script.google.com/macros/s/AKfycbxl32yg7Qg6Yqnhgc97OC8PVUieAgh8HgjNwsnY-eJEB7oJwevv3D9h-K_aKNvlrCIs8A/exec", {
+      method: "POST",
+      mode: "no-cors",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data)
+    }).then(() => alert("Match submitted"));
   });
 
   populatePlayers();
@@ -367,11 +324,4 @@
 </script>
 
 </body>
-
 </html>
-
-
-
-
-
-
