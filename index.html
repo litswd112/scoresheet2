@@ -107,7 +107,32 @@
 
 <form id="matchForm">
 <div class="container">
+<!-- Match Details -->
+<div class="card">
+  <h3>Match Details</h3>
 
+  <label>League</label>
+  <select id="league">
+    <option value="">Select league</option>
+    <option value="Premier League">Premier League</option>
+    <option value="Division 1">Division 1</option>
+    <option value="Division 2">Division 2</option>
+    <option value="Division 3">Division 3</option>
+    <option value="Division 4">Division 4</option>
+    <option value="Division 5">Division 5</option>
+    <option value="Division 6">Division 6</option>
+  </select>
+
+  <div id="matchTypeWrapper" style="display:none;">
+    <label>Match Type</label>
+    <select id="matchType">
+      <option value="Standard Match Day">Standard Match Day</option>
+      <option value="Semi Final">Semi Final</option>
+      <option value="Final">Final</option>
+    </select>
+  </div>
+</div>
+  
   <!-- Add Player -->
   <div class="card">
     <h3>Add New Player</h3>
@@ -354,7 +379,20 @@ function unlockForm() {
   document.getElementById("resetBtn").style.display = "none";
   document.getElementById("matchForm").reset();
 }
+const leagueSelect = document.getElementById("league");
+const matchTypeWrapper = document.getElementById("matchTypeWrapper");
+const matchTypeSelect = document.getElementById("matchType");
 
+leagueSelect.addEventListener("change", () => {
+  if (leagueSelect.value === "Premier League") {
+    matchTypeWrapper.style.display = "block";
+    matchTypeSelect.value = "Standard Match Day";
+  } else {
+    matchTypeWrapper.style.display = "none";
+    matchTypeSelect.value = "Standard Match Day";
+  }
+});
+  
 // ---------------- SUBMIT ----------------
 
 document.getElementById("matchForm").addEventListener("submit", function (e) {
@@ -364,13 +402,16 @@ document.getElementById("matchForm").addEventListener("submit", function (e) {
   const val = id => document.getElementById(id).value || "";
 
   const payload = {
-    players: [p[0].value, p[1].value, p[2].value, p[3].value],
-    killerA: val("killerA"),
-    killerB: val("killerB"),
-    s1: [val("s1a"), val("s1b"), val("s1tba"), val("s1tbb")],
-    s2: [val("s2a"), val("s2b"), val("s2tba"), val("s2tbb")],
-    s3: [val("s3a"), val("s3b")]
-  };
+  league: document.getElementById("league").value,
+  matchType: document.getElementById("matchType").value || "Standard Match Day",
+
+  players: [p[0].value, p[1].value, p[2].value, p[3].value],
+  killerA: val("killerA"),
+  killerB: val("killerB"),
+  s1: [val("s1a"), val("s1b"), val("s1tba"), val("s1tbb")],
+  s2: [val("s2a"), val("s2b"), val("s2tba"), val("s2tbb")],
+  s3: [val("s3a"), val("s3b")]
+};
 
   fetch("https://script.google.com/macros/s/AKfycbxjz--3DwiXuBIDVZNcDl-CtlHbWdUFPqqu2DMWyMbdBobAkMTCzDve4KXvzh227m51/exec", {
     method: "POST",
@@ -396,6 +437,7 @@ populateScores();
 
 </body>
 </html>
+
 
 
 
