@@ -190,7 +190,7 @@
 </form>
 
 <script>
- let players = [
+let players = [
   "Substitute Played",
   "Adrian Muica",
   "Alessandro Di Leo",
@@ -301,54 +301,47 @@
   "Zara Thompson",
   "Zoe Burnet"
 ];
-  
-  function populatePlayers() {
-    document.querySelectorAll(".player").forEach(sel => {
-      sel.innerHTML = "";
-      players.forEach(p => sel.appendChild(new Option(p, p)));
-    });
-  }
 
-  function populateScores() {
-    document.querySelectorAll(".score7").forEach(sel => {
-      for (let i = 0; i <= 7; i++) sel.appendChild(new Option(i, i));
-    });
-    document.querySelectorAll(".score20").forEach(sel => {
-      for (let i = 0; i <= 20; i++) sel.appendChild(new Option(i, i));
-    });
-  }
+function populatePlayers() {
+  document.querySelectorAll(".player").forEach(sel => {
+    sel.innerHTML = "";
+    players.forEach(p => sel.add(new Option(p, p)));
+  });
+}
 
-  function addPlayer() {
-   document.getElementById("matchForm").addEventListener("submit", function (e) {
+function populateScores() {
+  document.querySelectorAll(".score7").forEach(sel => {
+    sel.innerHTML = "";
+    for (let i = 0; i <= 7; i++) sel.add(new Option(i, i));
+  });
+
+  document.querySelectorAll(".score20").forEach(sel => {
+    sel.innerHTML = "";
+    for (let i = 0; i <= 20; i++) sel.add(new Option(i, i));
+  });
+}
+
+function addPlayer() {
+  const input = document.getElementById("newPlayer");
+  if (input.value.trim()) {
+    players.push(input.value.trim());
+    populatePlayers();
+    input.value = "";
+  }
+}
+
+document.getElementById("matchForm").addEventListener("submit", function (e) {
   e.preventDefault();
 
-  const playerEls = document.querySelectorAll(".player");
+  const p = document.querySelectorAll(".player");
 
   const payload = {
-    players: [
-      playerEls[0].value, // Team A P1
-      playerEls[1].value, // Team A P2
-      playerEls[2].value, // Team B P1
-      playerEls[3].value  // Team B P2
-    ],
-    killerA: document.getElementById("killerA").value,
-    killerB: document.getElementById("killerB").value,
-    s1: [
-      document.getElementById("s1a").value,
-      document.getElementById("s1b").value,
-      document.getElementById("s1tba").value,
-      document.getElementById("s1tbb").value
-    ],
-    s2: [
-      document.getElementById("s2a").value,
-      document.getElementById("s2b").value,
-      document.getElementById("s2tba").value,
-      document.getElementById("s2tbb").value
-    ],
-    s3: [
-      document.getElementById("s3a").value,
-      document.getElementById("s3b").value
-    ]
+    players: [p[0].value, p[1].value, p[2].value, p[3].value],
+    killerA: killerA.value,
+    killerB: killerB.value,
+    s1: [s1a.value, s1b.value, s1tba.value, s1tbb.value],
+    s2: [s2a.value, s2b.value, s2tba.value, s2tbb.value],
+    s3: [s3a.value, s3b.value]
   };
 
   fetch("https://script.google.com/macros/s/AKfycbxl32yg7Qg6Yqnhgc97OC8PVUieAgh8HgjNwsnY-eJEB7oJwevv3D9h-K_aKNvlrCIs8A/exec", {
@@ -359,10 +352,9 @@
   }).then(() => alert("Match submitted successfully"));
 });
 
-  populatePlayers();
-  populateScores();
+populatePlayers();
+populateScores();
 </script>
 
 </body>
 </html>
-
