@@ -185,9 +185,11 @@
 </div>
 
 <div class="sticky-submit">
-  <button class="btn" type="submit">Submit Match</button>
+  <button class="btn" type="submit" id="submitBtn">Submit Match</button>
+  <button class="btn secondary" type="button" id="resetBtn" style="display:none;">
+    Enter Another Match
+  </button>
 </div>
-</form>
 
 <script>
 let players = [
@@ -332,6 +334,26 @@ function addPlayer() {
   }
 }
 
+function lockForm() {
+  document.querySelectorAll("select, input, button")
+    .forEach(el => {
+      if (el.id !== "resetBtn") el.disabled = true;
+    });
+
+  document.getElementById("submitBtn").innerText = "✓ Submitted";
+  document.getElementById("resetBtn").style.display = "block";
+}
+
+function unlockForm() {
+  document.querySelectorAll("select, input, button")
+    .forEach(el => el.disabled = false);
+
+  document.getElementById("submitBtn").innerText = "Submit Match";
+  document.getElementById("resetBtn").style.display = "none";
+
+  document.getElementById("matchForm").reset();
+}
+
 document.getElementById("matchForm").addEventListener("submit", function (e) {
   e.preventDefault();
 
@@ -353,8 +375,12 @@ document.getElementById("matchForm").addEventListener("submit", function (e) {
     mode: "no-cors",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(payload)
-  }).then(() => alert("Match submitted successfully"));
+  }).then(() => {
+  alert("Match submitted successfully");
+  lockForm();
 });
+
+document.getElementById("resetBtn").addEventListener("click", unlockForm);
 
 populatePlayers();
 populateScores();
@@ -362,6 +388,7 @@ populateScores();
 
 </body>
 </html>
+
 
 
 
