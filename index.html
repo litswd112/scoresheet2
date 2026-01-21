@@ -312,11 +312,13 @@ function populatePlayers() {
 function populateScores() {
   document.querySelectorAll(".score7").forEach(sel => {
     sel.innerHTML = "";
+    sel.add(new Option("–", "")); // placeholder
     for (let i = 0; i <= 7; i++) sel.add(new Option(i, i));
   });
 
   document.querySelectorAll(".score20").forEach(sel => {
     sel.innerHTML = "";
+    sel.add(new Option("–", "")); // placeholder
     for (let i = 0; i <= 20; i++) sel.add(new Option(i, i));
   });
 }
@@ -358,3 +360,4 @@ populateScores();
 
 </body>
 </html>
+
