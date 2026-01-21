@@ -356,7 +356,9 @@ function unlockForm() {
 
 document.getElementById("matchForm").addEventListener("submit", function (e) {
   e.preventDefault();
-
+  
+document.getElementById("resetBtn").addEventListener("click", unlockForm);
+  
   const p = document.querySelectorAll(".player");
 
   const val = id => document.getElementById(id).value || "";
@@ -380,14 +382,13 @@ document.getElementById("matchForm").addEventListener("submit", function (e) {
   lockForm();
 });
 
-document.getElementById("resetBtn").addEventListener("click", unlockForm);
-
 populatePlayers();
 populateScores();
 </script>
 
 </body>
 </html>
+
 
 
 
