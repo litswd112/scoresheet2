@@ -304,6 +304,8 @@ let players = [
   "Zoe Burnet"
 ];
 
+// ---------------- POPULATE DROPDOWNS ----------------
+
 function populatePlayers() {
   document.querySelectorAll(".player").forEach(sel => {
     sel.innerHTML = "";
@@ -314,16 +316,18 @@ function populatePlayers() {
 function populateScores() {
   document.querySelectorAll(".score7").forEach(sel => {
     sel.innerHTML = "";
-    sel.add(new Option("–", "")); // placeholder
+    sel.add(new Option("–", ""));
     for (let i = 0; i <= 7; i++) sel.add(new Option(i, i));
   });
 
   document.querySelectorAll(".score20").forEach(sel => {
     sel.innerHTML = "";
-    sel.add(new Option("–", "")); // placeholder
+    sel.add(new Option("–", ""));
     for (let i = 0; i <= 20; i++) sel.add(new Option(i, i));
   });
 }
+
+// ---------------- ADD PLAYER ----------------
 
 function addPlayer() {
   const input = document.getElementById("newPlayer");
@@ -334,33 +338,29 @@ function addPlayer() {
   }
 }
 
-function lockForm() {
-  document.querySelectorAll("select, input, button")
-    .forEach(el => {
-      if (el.id !== "resetBtn") el.disabled = true;
-    });
+// ---------------- LOCK / UNLOCK ----------------
 
+function lockForm() {
+  document.querySelectorAll("select, input, button").forEach(el => {
+    if (el.id !== "resetBtn") el.disabled = true;
+  });
   document.getElementById("submitBtn").innerText = "✓ Submitted";
   document.getElementById("resetBtn").style.display = "block";
 }
 
 function unlockForm() {
-  document.querySelectorAll("select, input, button")
-    .forEach(el => el.disabled = false);
-
+  document.querySelectorAll("select, input, button").forEach(el => el.disabled = false);
   document.getElementById("submitBtn").innerText = "Submit Match";
   document.getElementById("resetBtn").style.display = "none";
-
   document.getElementById("matchForm").reset();
 }
 
+// ---------------- SUBMIT ----------------
+
 document.getElementById("matchForm").addEventListener("submit", function (e) {
   e.preventDefault();
-  
-document.getElementById("resetBtn").addEventListener("click", unlockForm);
-  
-  const p = document.querySelectorAll(".player");
 
+  const p = document.querySelectorAll(".player");
   const val = id => document.getElementById(id).value || "";
 
   const payload = {
@@ -378,16 +378,25 @@ document.getElementById("resetBtn").addEventListener("click", unlockForm);
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(payload)
   }).then(() => {
-  alert("Match submitted successfully");
-  lockForm();
+    alert("Match submitted successfully");
+    lockForm();
+  });
 });
+
+// ---------------- RESET BUTTON ----------------
+
+document.getElementById("resetBtn").addEventListener("click", unlockForm);
+
+// ---------------- INIT (THIS WAS THE BUG) ----------------
 
 populatePlayers();
 populateScores();
 </script>
 
+
 </body>
 </html>
+
 
 
 
