@@ -111,6 +111,9 @@
 <div class="card">
   <h3>Match Details</h3>
 
+<label>Match Day</label>
+<select id="matchDay"></select>
+  
   <label>League</label>
   <select id="league">
     <option value="">Select league</option>
@@ -123,6 +126,15 @@
     <option value="Division 6">Division 6</option>
   </select>
 
+<label>Group</label>
+<select id="group">
+  <option value="">Select group</option>
+  <option value="A">Group A</option>
+  <option value="B">Group B</option>
+  <option value="C">Group C</option>
+  <option value="D">Group D</option>
+</select>
+  
   <div id="matchTypeWrapper" style="display:none;">
     <label>Match Type</label>
     <select id="matchType">
@@ -338,6 +350,22 @@ function populatePlayers() {
   });
 }
 
+function populateMatchDays() {
+  const select = document.getElementById("matchDay");
+  select.innerHTML = '<option value="">Select match day</option>';
+
+  const year = new Date().getFullYear();
+  const months = [
+    "January", "February", "March", "April", "May", "June",
+    "July", "August", "September", "October", "November", "December"
+  ];
+
+  months.forEach(month => {
+    const value = `${month} ${year}`;
+    select.add(new Option(value, value));
+  });
+}
+  
 function populateScores() {
   document.querySelectorAll(".score7").forEach(sel => {
     sel.innerHTML = "";
@@ -401,8 +429,10 @@ document.getElementById("matchForm").addEventListener("submit", function (e) {
   const p = document.querySelectorAll(".player");
   const val = id => document.getElementById(id).value || "";
 
-  const payload = {
+ const payload = {
+  matchDay: document.getElementById("matchDay").value, // NEW
   league: document.getElementById("league").value,
+  group: document.getElementById("group").value,       // NEW
   matchType: document.getElementById("matchType").value || "Standard Match Day",
 
   players: [p[0].value, p[1].value, p[2].value, p[3].value],
@@ -432,25 +462,10 @@ document.getElementById("resetBtn").addEventListener("click", unlockForm);
 
 populatePlayers();
 populateScores();
+populateMatchDays();  
 </script>
 
 
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
