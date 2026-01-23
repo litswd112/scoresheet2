@@ -431,11 +431,44 @@ leagueSelect.addEventListener("change", () => {
     matchTypeSelect.value = "Standard Match Day";
   }
 });
+
+function isFormValid() {
+  const requiredSelects = [
+    "matchDay",
+    "league",
+    "group",
+    "finishedStatus",
+    "s1a",
+    "s1b",
+    "s2a",
+    "s2b"
+  ];
+
+  // Check required dropdowns
+  for (const id of requiredSelects) {
+    if (!document.getElementById(id).value) {
+      return false;
+    }
+  }
+
+  // Ensure all 4 players are selected
+  const players = document.querySelectorAll(".player");
+  for (const p of players) {
+    if (!p.value) return false;
+  }
+
+  return true;
+}
   
 // ---------------- SUBMIT ----------------
 
 document.getElementById("matchForm").addEventListener("submit", function (e) {
   e.preventDefault();
+
+  if (!isFormValid()) {
+    alert("Please complete all required fields before submitting the match.");
+    return;
+  }
 
   const p = document.querySelectorAll(".player");
   const val = id => document.getElementById(id).value || "";
@@ -483,5 +516,6 @@ populateMatchDays();
 
 </body>
 </html>
+
 
 
