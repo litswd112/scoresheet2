@@ -219,6 +219,17 @@
     <select id="killerB" class="score20"></select>
   </div>
 
+<!-- Match Completion -->
+<div class="card">
+  <h3>Match Completion</h3>
+  <label>Was the game finished completely?</label>
+  <select id="finishedStatus">
+    <option value="">Select status</option>
+    <option value="Finished">Finished</option>
+    <option value="Unfinished">Unfinished</option>
+  </select>
+</div>
+  
 </div>
 
 <div class="sticky-submit">
@@ -430,14 +441,18 @@ document.getElementById("matchForm").addEventListener("submit", function (e) {
   const val = id => document.getElementById(id).value || "";
 
  const payload = {
-  matchDay: document.getElementById("matchDay").value, // NEW
+  matchDay: document.getElementById("matchDay").value,
   league: document.getElementById("league").value,
-  group: document.getElementById("group").value,       // NEW
+  group: document.getElementById("group").value,
   matchType: document.getElementById("matchType").value || "Standard Match Day",
 
   players: [p[0].value, p[1].value, p[2].value, p[3].value],
+
   killerA: val("killerA"),
   killerB: val("killerB"),
+
+  finishedStatus: val("finishedStatus"), // ✅ NEW
+
   s1: [val("s1a"), val("s1b"), val("s1tba"), val("s1tbb")],
   s2: [val("s2a"), val("s2b"), val("s2tba"), val("s2tbb")],
   s3: [val("s3a"), val("s3b")]
@@ -468,4 +483,5 @@ populateMatchDays();
 
 </body>
 </html>
+
 
