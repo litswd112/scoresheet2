@@ -335,6 +335,18 @@ matchForm.addEventListener("submit", e => {
   });
 });
 
+document.getElementById("league").addEventListener("change", e => {
+  const wrapper = document.getElementById("matchTypeWrapper");
+  const matchType = document.getElementById("matchType");
+
+  if (e.target.value === "Premier League") {
+    wrapper.style.display = "block";
+  } else {
+    wrapper.style.display = "none";
+    matchType.value = "Standard Match Day";
+  }
+});
+  
 /* ================= INIT ================= */
 populateScores();
 populateMatchDays();
@@ -343,3 +355,4 @@ loadPlayers();
 
 </body>
 </html>
+
