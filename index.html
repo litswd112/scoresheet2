@@ -309,6 +309,57 @@ function populateMatchDays() {
 matchForm.addEventListener("submit", e => {
   e.preventDefault();
 
+  // ❌ stop submit if players invalid
+  if (!validatePlayers()) return;
+
+  // ❌ stop submit if match type invalid
+  if (!validateMatchType()) return;
+
+  // ✅ continue with submit
+  fetch(SCRIPT_URL, {
+    method: "POST",
+    mode: "no-cors",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      matchDay: document.getElementById("matchDay").value || "",
+      league: document.getElementById("league").value || "",
+      group: document.getElementById("group").value || "",
+      matchType: document.getElementById("matchType").value || "Standard Match Day",
+      players: [
+        document.querySelectorAll(".player")[0].value,
+        document.querySelectorAll(".player")[1].value,
+        document.querySelectorAll(".player")[2].value,
+        document.querySelectorAll(".player")[3].value
+      ],
+      finishedStatus: document.getElementById("finishedStatus").value || "",
+      killerA: document.getElementById("killerA").value || "",
+      killerB: document.getElementById("killerB").value || "",
+      s1: [
+        document.getElementById("s1a").value || "",
+        document.getElementById("s1b").value || "",
+        document.getElementById("s1tba").value || "",
+        document.getElementById("s1tbb").value || ""
+      ],
+      s2: [
+        document.getElementById("s2a").value || "",
+        document.getElementById("s2b").value || "",
+        document.getElementById("s2tba").value || "",
+        document.getElementById("s2tbb").value || ""
+      ],
+      s3: [
+        document.getElementById("s3a").value || "",
+        document.getElementById("s3b").value || ""
+      ]
+    })
+  }).then(() => {
+    alert("Match submitted successfully");
+    lockForm();
+  });
+});
+
+
+  if (!validatePlayers()) return;
+
   const p = document.querySelectorAll(".player");
   const v = id => document.getElementById(id).value || "";
 
@@ -367,6 +418,36 @@ function unlockForm() {
 
 resetBtn.addEventListener("click", unlockForm);
 
+function validatePlayers() {
+  const players = [...document.querySelectorAll(".player")]
+    .map(s => s.value)
+    .filter(Boolean);
+
+  if (players.length !== 4) {
+    alert("Please select all 4 players.");
+    return false;
+  }
+
+  const unique = new Set(players);
+  if (unique.size !== 4) {
+    alert("Each player must be unique.");
+    return false;
+  }
+
+  return true;
+}
+
+function validateMatchType() {
+  const league = document.getElementById("league").value;
+  const matchType = document.getElementById("matchType").value;
+
+  if (league === "Premier League" && !matchType) {
+    alert("Please select a match type for Premier League.");
+    return false;
+  }
+
+  return true;
+}
 
 
 /* ================= INIT ================= */
@@ -377,5 +458,6 @@ loadPlayers();
 
 </body>
 </html>
+
 
 
