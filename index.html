@@ -246,8 +246,17 @@ function loadPlayers() {
 function populatePlayers() {
   document.querySelectorAll(".player").forEach(sel => {
     const current = sel.value;
+
+    // Sort alphabetically but keep "Substitute" at the top
+    const sorted = [...players].sort((a, b) => {
+      if (a === "Substitute") return -1;
+      if (b === "Substitute") return 1;
+      return a.localeCompare(b);
+    });
+
     sel.innerHTML = "<option value=''>Select player</option>";
-    players.forEach(p => sel.add(new Option(p, p)));
+    sorted.forEach(p => sel.add(new Option(p, p)));
+
     sel.value = current;
   });
 }
@@ -427,4 +436,5 @@ loadPlayers();
 
 </body>
 </html>
+
 
