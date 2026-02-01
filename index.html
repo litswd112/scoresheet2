@@ -163,20 +163,30 @@
 
   <!-- TEAMS -->
   <div class="card">
- <h3 id="teamAHeading"></h3>
+<h3>
+  Team A <span id="teamAName"></span>
+</h3>
     <select class="player"></select>
     <select class="player"></select>
   </div>
 
   <div class="card">
-<h3 id="teamBHeading"></h3>
+<h3>
+  Team B <span id="teamAName"></span>
+</h3>
     <select class="player"></select>
     <select class="player"></select>
   </div>
 
   <!-- SETS -->
   <div class="card">
-  <h3>Set 1</h3>
+ <h3>Set 1</h3>
+<h3>
+  Team A <span id="set1TeamAName"></span>
+</h3>
+<h3>
+  Team B <span id="set1TeamBName"></span>
+</h3>
   <h4 id="set1Teams"></h4>
     <label>Team A</label><select id="s1a" class="score7"></select>
     <label>Team B</label><select id="s1b" class="score7"></select>
@@ -186,8 +196,13 @@
 
 <div class="card">
   <h3>Set 2</h3>
-  <h4 id="set2Teams"></h4>
-     <label>Team A</label><select id="s2a" class="score7"></select>
+ <h3>
+  Team A <span id="set2TeamAName"></span>
+</h3>
+<h3>
+  Team B <span id="set2TeamBName"></span>
+</h3>
+    <label>Team A</label><select id="s2a" class="score7"></select>
     <label>Team B</label><select id="s2b" class="score7"></select>
     <label>TB A</label><select id="s2tba" class="score20"></select>
     <label>TB B</label><select id="s2tbb" class="score20"></select>
@@ -195,21 +210,28 @@
 
 <div class="card">
   <h3>Championship Tie Break</h3>
-  <h4 id="tbTeams"></h4>
+<h3>
+  Team A <span id="tbTeamAName"></span>
+</h3>
+<h3>
+  Team B <span id="tbTeamBName"></span>
+</h3>
     <label>Team A</label><select id="s3a" class="score20"></select>
     <label>Team B</label><select id="s3b" class="score20"></select>
   </div>
-
+  
   <div class="card">
     <h3>Killer Points</h3>
+    <h3>
+  Team A <span id="killerTeamAName"></span>
+</h3>
+<h3>
+  Team B <span id="killerTeamBName"></span>
+</h3>
     <label>Team A</label><select id="killerA" class="score20"></select>
     <label>Team B</label><select id="killerB" class="score20"></select>
   </div>
 
-<div class="card">
-  <h3>Killer Points</h3>
-  <h4 id="killerTeams"></h4>
- 
     <h3>Match Completion</h3>
     <label>Status</label>
     <select id="finishedStatus">
@@ -272,22 +294,32 @@ function populatePlayers() {
 document.addEventListener("change", e => {
   if (!e.target.classList.contains("player")) return;
 
-  updateTeamHeadings();   // 🔥 Add this line
+ function updateTeamHeadings() {
+  const p = [...document.querySelectorAll(".player")].map(x => x.value);
 
- 
-  const selections = [...document.querySelectorAll(".player")]
-    .map(s => s.value)
-    .filter(Boolean);
+  const teamA = (p[0] && p[1]) ? `${p[0]} & ${p[1]}` : "";
+  const teamB = (p[2] && p[3]) ? `${p[2]} & ${p[3]}` : "";
 
-  const duplicates = selections.filter(
-    (v, i, a) => a.indexOf(v) !== i
-  );
+  // Main headings
+  document.getElementById("teamAName").textContent = teamA ? `- ${teamA}` : "";
+  document.getElementById("teamBName").textContent = teamB ? `- ${teamB}` : "";
 
-  if (duplicates.length) {
-    alert("The same player cannot be selected twice.");
-    e.target.value = "";
-  }
-});
+  // Set 1
+  document.getElementById("set1TeamAName").textContent = teamA ? `- ${teamA}` : "";
+  document.getElementById("set1TeamBName").textContent = teamB ? `- ${teamB}` : "";
+
+  // Set 2
+  document.getElementById("set2TeamAName").textContent = teamA ? `- ${teamA}` : "";
+  document.getElementById("set2TeamBName").textContent = teamB ? `- ${teamB}` : "";
+
+  // Championship Tie Break
+  document.getElementById("tbTeamAName").textContent = teamA ? `- ${teamA}` : "";
+  document.getElementById("tbTeamBName").textContent = teamB ? `- ${teamB}` : "";
+
+  // Killer Points
+  document.getElementById("killerTeamAName").textContent = teamA ? `- ${teamA}` : "";
+  document.getElementById("killerTeamBName").textContent = teamB ? `- ${teamB}` : "";
+}
 
 /* ================= ADD PLAYER ================= */
 
@@ -466,12 +498,13 @@ matchForm.addEventListener("submit", e => {
 populateScores();
 populateMatchDays();
 loadPlayers();
-updateTeamHeadings();  // <--- Add this
+updateTeamHeadings();
 
 </script>
 
 </body>
 </html>
+
 
 
 
