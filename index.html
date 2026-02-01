@@ -163,13 +163,13 @@
 
   <!-- TEAMS -->
   <div class="card">
-    <h3>Team A</h3>
+ <h3 id="teamAHeading">Team A</h3>
     <select class="player"></select>
     <select class="player"></select>
   </div>
 
   <div class="card">
-    <h3>Team B</h3>
+<h3 id="teamBHeading">Team B</h3>
     <select class="player"></select>
     <select class="player"></select>
   </div>
@@ -266,6 +266,9 @@ function populatePlayers() {
 document.addEventListener("change", e => {
   if (!e.target.classList.contains("player")) return;
 
+  updateTeamHeadings();   // 🔥 Add this line
+
+ 
   const selections = [...document.querySelectorAll(".player")]
     .map(s => s.value)
     .filter(Boolean);
@@ -400,6 +403,21 @@ function validateMatchType() {
   return true;
 }
 
+function updateTeamHeadings() {
+  const players = [...document.querySelectorAll(".player")].map(p => p.value);
+
+  const teamA = players[0] && players[1]
+    ? `${players[0]} & ${players[1]}`
+    : "Team A";
+
+  const teamB = players[2] && players[3]
+    ? `${players[2]} & ${players[3]}`
+    : "Team B";
+
+  document.getElementById("teamAHeading").textContent = `Team A – ${teamA}`;
+  document.getElementById("teamBHeading").textContent = `Team B – ${teamB}`;
+}
+  
 /* ================= SUBMIT ================= */
 matchForm.addEventListener("submit", e => {
   e.preventDefault();
@@ -440,10 +458,13 @@ matchForm.addEventListener("submit", e => {
 populateScores();
 populateMatchDays();
 loadPlayers();
+updateTeamHeadings();
+
 </script>
 
 </body>
 </html>
+
 
 
 
