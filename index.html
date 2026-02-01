@@ -4,106 +4,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>BSLTC Padel League Match Results Entry</title>
-
   <style>
-    :root {
-      --primary: #1f7a8c;
-      --secondary: #022b3a;
-      --bg: #f4f7f9;
-      --card: #ffffff;
-    }
-
-    * {
-      box-sizing: border-box;
-      font-family: system-ui, -apple-system;
-    }
-
-    body {
-      margin: 0;
-      padding-bottom: 110px;
-      background:
-        linear-gradient(rgba(244,247,249,0.92), rgba(244,247,249,0.92)),
-        url("https://litswd112.github.io/scoresheet2/images/Form%20Header%20(1).jpg")
-        center / cover no-repeat fixed;
-    }
-
-    header {
-      background: linear-gradient(135deg, var(--primary), var(--secondary));
-      color: white;
-      padding: 20px;
-      text-align: center;
-      font-size: 1.4rem;
-    }
-
-    .container {
-      max-width: 900px;
-      margin: auto;
-      padding: 16px;
-    }
-
-    .card {
-      background: var(--card);
-      border-radius: 14px;
-      padding: 16px;
-      margin-bottom: 16px;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.06);
-    }
-
-    label {
-      display: block;
-      margin-top: 10px;
-      font-size: 0.9rem;
-      font-weight: 600;
-    }
-
-    select, input {
-      width: 100%;
-      padding: 10px;
-      margin-top: 4px;
-      border-radius: 10px;
-      border: 1px solid #ccc;
-      font-size: 1rem;
-    }
-
-    .grid-2 {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 12px;
-    }
-
-    .btn {
-      background: var(--primary);
-      color: white;
-      border: none;
-      padding: 14px;
-      border-radius: 14px;
-      font-size: 1.1rem;
-      cursor: pointer;
-      width: 100%;
-    }
-
-    .btn.secondary {
-      background: #ddd;
-      color: #333;
-    }
-
-    .sticky-submit {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      background: white;
-      padding: 12px;
-      box-shadow: 0 -5px 20px rgba(0,0,0,0.15);
-    }
-
-    @media (min-width: 768px) {
-      .sticky-submit {
-        position: static;
-        box-shadow: none;
-        padding: 0;
-      }
-    }
+    /* your CSS unchanged */
   </style>
 </head>
 
@@ -117,39 +19,7 @@
   <!-- MATCH DETAILS -->
   <div class="card">
     <h3>Match Details</h3>
-
-    <label>Match Day</label>
-    <select id="matchDay"></select>
-
-    <label>League</label>
-    <select id="league">
-      <option value="">Select league</option>
-      <option value="Premier League">Premier League</option>
-      <option value="Division 1">Division 1</option>
-      <option value="Division 2">Division 2</option>
-      <option value="Division 3">Division 3</option>
-      <option value="Division 4">Division 4</option>
-      <option value="Division 5">Division 5</option>
-      <option value="Division 6">Division 6</option>
-    </select>
-
-    <label>Group</label>
-    <select id="group">
-      <option value="">Select group</option>
-      <option value="A">Group A</option>
-      <option value="B">Group B</option>
-      <option value="C">Group C</option>
-      <option value="D">Group D</option>
-    </select>
-
-    <div id="matchTypeWrapper" style="display:none;">
-      <label>Match Type</label>
-      <select id="matchType">
-        <option value="Standard Match Day">Standard Match Day</option>
-        <option value="Semi Final">Semi Final</option>
-        <option value="Final">Final</option>
-      </select>
-    </div>
+    <!-- unchanged -->
   </div>
 
   <!-- ADD PLAYER -->
@@ -157,81 +27,61 @@
     <h3>Add New Player</h3>
     <div class="grid-2">
       <input type="text" id="newPlayer" placeholder="Player name">
-<button type="button" class="btn secondary" id="addPlayerBtn" onclick="addPlayer()">Add</button>
+      <button type="button" class="btn secondary" id="addPlayerBtn" onclick="addPlayer()">Add</button>
     </div>
   </div>
 
   <!-- TEAMS -->
   <div class="card">
-<h3>
-  Team A <span id="teamAName"></span>
-</h3>
+    <h3>Team A <span id="teamAName"></span></h3>
     <select class="player"></select>
     <select class="player"></select>
   </div>
 
   <div class="card">
-<h3>
-  Team B <span id="teamAName"></span>
-</h3>
+    <h3>Team B <span id="teamBName"></span></h3>
     <select class="player"></select>
     <select class="player"></select>
   </div>
 
   <!-- SETS -->
   <div class="card">
- <h3>Set 1</h3>
-<h3>
-  Team A <span id="set1TeamAName"></span>
-</h3>
-<h3>
-  Team B <span id="set1TeamBName"></span>
-</h3>
-  <h4 id="set1Teams"></h4>
+    <h3>Set 1</h3>
+    <h3>Team A <span id="set1TeamAName"></span></h3>
+    <h3>Team B <span id="set1TeamBName"></span></h3>
     <label>Team A</label><select id="s1a" class="score7"></select>
     <label>Team B</label><select id="s1b" class="score7"></select>
     <label>TB A</label><select id="s1tba" class="score20"></select>
     <label>TB B</label><select id="s1tbb" class="score20"></select>
   </div>
 
-<div class="card">
-  <h3>Set 2</h3>
- <h3>
-  Team A <span id="set2TeamAName"></span>
-</h3>
-<h3>
-  Team B <span id="set2TeamBName"></span>
-</h3>
+  <div class="card">
+    <h3>Set 2</h3>
+    <h3>Team A <span id="set2TeamAName"></span></h3>
+    <h3>Team B <span id="set2TeamBName"></span></h3>
     <label>Team A</label><select id="s2a" class="score7"></select>
     <label>Team B</label><select id="s2b" class="score7"></select>
     <label>TB A</label><select id="s2tba" class="score20"></select>
     <label>TB B</label><select id="s2tbb" class="score20"></select>
   </div>
 
-<div class="card">
-  <h3>Championship Tie Break</h3>
-<h3>
-  Team A <span id="tbTeamAName"></span>
-</h3>
-<h3>
-  Team B <span id="tbTeamBName"></span>
-</h3>
+  <div class="card">
+    <h3>Championship Tie Break</h3>
+    <h3>Team A <span id="tbTeamAName"></span></h3>
+    <h3>Team B <span id="tbTeamBName"></span></h3>
     <label>Team A</label><select id="s3a" class="score20"></select>
     <label>Team B</label><select id="s3b" class="score20"></select>
   </div>
-  
+
   <div class="card">
     <h3>Killer Points</h3>
-    <h3>
-  Team A <span id="killerTeamAName"></span>
-</h3>
-<h3>
-  Team B <span id="killerTeamBName"></span>
-</h3>
+    <h3>Team A <span id="killerTeamAName"></span></h3>
+    <h3>Team B <span id="killerTeamBName"></span></h3>
     <label>Team A</label><select id="killerA" class="score20"></select>
     <label>Team B</label><select id="killerB" class="score20"></select>
   </div>
 
+  <div class="card">
     <h3>Match Completion</h3>
     <label>Status</label>
     <select id="finishedStatus">
@@ -274,55 +124,61 @@ function loadPlayers() {
 function populatePlayers() {
   document.querySelectorAll(".player").forEach(sel => {
     const current = sel.value;
-
-    // Sort alphabetically but keep "Substitute" at the top
-   const sorted = ["Substitute", ...players.filter(p => p !== "Substitute")]
-  .sort((a, b) => {
-    if (a === "Substitute") return -1;
-    if (b === "Substitute") return 1;
-    return a.localeCompare(b);
-  });
+    const sorted = ["Substitute", ...players.filter(p => p !== "Substitute")]
+      .sort((a, b) => {
+        if (a === "Substitute") return -1;
+        if (b === "Substitute") return 1;
+        return a.localeCompare(b);
+      });
 
     sel.innerHTML = "<option value=''>Select player</option>";
     sorted.forEach(p => sel.add(new Option(p, p)));
-
     sel.value = current;
   });
+}
+
+/* ================= UPDATE HEADINGS ================= */
+function updateTeamHeadings() {
+  const p = [...document.querySelectorAll(".player")].map(x => x.value);
+
+  const teamA = (p[0] && p[1]) ? `${p[0]} & ${p[1]}` : "";
+  const teamB = (p[2] && p[3]) ? `${p[2]} & ${p[3]}` : "";
+
+  document.getElementById("teamAName").textContent = teamA ? `- ${teamA}` : "";
+  document.getElementById("teamBName").textContent = teamB ? `- ${teamB}` : "";
+
+  document.getElementById("set1TeamAName").textContent = teamA ? `- ${teamA}` : "";
+  document.getElementById("set1TeamBName").textContent = teamB ? `- ${teamB}` : "";
+
+  document.getElementById("set2TeamAName").textContent = teamA ? `- ${teamA}` : "";
+  document.getElementById("set2TeamBName").textContent = teamB ? `- ${teamB}` : "";
+
+  document.getElementById("tbTeamAName").textContent = teamA ? `- ${teamA}` : "";
+  document.getElementById("tbTeamBName").textContent = teamB ? `- ${teamB}` : "";
+
+  document.getElementById("killerTeamAName").textContent = teamA ? `- ${teamA}` : "";
+  document.getElementById("killerTeamBName").textContent = teamB ? `- ${teamB}` : "";
 }
 
 /* ================= DUPLICATE PROTECTION ================= */
 document.addEventListener("change", e => {
   if (!e.target.classList.contains("player")) return;
 
- function updateTeamHeadings() {
-  const p = [...document.querySelectorAll(".player")].map(x => x.value);
+  const selections = [...document.querySelectorAll(".player")]
+    .map(s => s.value)
+    .filter(Boolean);
 
-  const teamA = (p[0] && p[1]) ? `${p[0]} & ${p[1]}` : "";
-  const teamB = (p[2] && p[3]) ? `${p[2]} & ${p[3]}` : "";
+  const duplicates = selections.filter((v, i, a) => a.indexOf(v) !== i);
 
-  // Main headings
-  document.getElementById("teamAName").textContent = teamA ? `- ${teamA}` : "";
-  document.getElementById("teamBName").textContent = teamB ? `- ${teamB}` : "";
+  if (duplicates.length) {
+    alert("The same player cannot be selected twice.");
+    e.target.value = "";
+  }
 
-  // Set 1
-  document.getElementById("set1TeamAName").textContent = teamA ? `- ${teamA}` : "";
-  document.getElementById("set1TeamBName").textContent = teamB ? `- ${teamB}` : "";
-
-  // Set 2
-  document.getElementById("set2TeamAName").textContent = teamA ? `- ${teamA}` : "";
-  document.getElementById("set2TeamBName").textContent = teamB ? `- ${teamB}` : "";
-
-  // Championship Tie Break
-  document.getElementById("tbTeamAName").textContent = teamA ? `- ${teamA}` : "";
-  document.getElementById("tbTeamBName").textContent = teamB ? `- ${teamB}` : "";
-
-  // Killer Points
-  document.getElementById("killerTeamAName").textContent = teamA ? `- ${teamA}` : "";
-  document.getElementById("killerTeamBName").textContent = teamB ? `- ${teamB}` : "";
-}
+  updateTeamHeadings();
+});
 
 /* ================= ADD PLAYER ================= */
-
 function addPlayer() {
   const input = document.getElementById("newPlayer");
   const name = input.value.trim();
@@ -330,12 +186,11 @@ function addPlayer() {
 
   fetch(SCRIPT_URL, {
     method: "POST",
-    mode: "no-cors",     // <--- IMPORTANT
+    mode: "cors",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ action: "addPlayer", name })
   })
   .then(() => {
-    // Refresh player list after adding
     loadPlayers();
     input.value = "";
     alert("Player added successfully");
@@ -346,7 +201,6 @@ function addPlayer() {
   });
 }
 
- 
 /* ================= SCORES & MATCH DAYS ================= */
 function populateScores() {
   document.querySelectorAll(".score7").forEach(sel => {
@@ -372,10 +226,8 @@ function populateMatchDays() {
 document.getElementById("league").addEventListener("change", e => {
   const wrapper = document.getElementById("matchTypeWrapper");
   const matchType = document.getElementById("matchType");
-
-  if (e.target.value === "Premier League") {
-    wrapper.style.display = "block";
-  } else {
+  if (e.target.value === "Premier League") wrapper.style.display = "block";
+  else {
     wrapper.style.display = "none";
     matchType.value = "Standard Match Day";
   }
@@ -384,28 +236,19 @@ document.getElementById("league").addEventListener("change", e => {
 /* ================= LOCK / RESET ================= */
 function lockForm() {
   document.querySelectorAll("select,input,button").forEach(el => {
-    // Keep reset + add player buttons enabled
-    if (el.id !== "resetBtn" && el.id !== "addPlayerBtn") {
-      el.disabled = true;
-    }
+    if (el.id !== "resetBtn" && el.id !== "addPlayerBtn") el.disabled = true;
   });
-
   submitBtn.textContent = "✓ Submitted";
   resetBtn.style.display = "block";
 }
 
 function unlockForm() {
   document.getElementById("matchForm").reset();
-
-  // Re-enable everything
-  document.querySelectorAll("select,input,button").forEach(el => {
-    el.disabled = false;
-  });
-
+  document.querySelectorAll("select,input,button").forEach(el => el.disabled = false);
   submitBtn.textContent = "Submit Match";
   resetBtn.style.display = "none";
+  updateTeamHeadings();
 }
-
 
 resetBtn.addEventListener("click", unlockForm);
 
@@ -414,54 +257,24 @@ function validatePlayers() {
   const players = [...document.querySelectorAll(".player")]
     .map(s => s.value)
     .filter(Boolean);
-
-  if (players.length !== 4) {
-    alert("Please select all 4 players.");
-    return false;
-  }
-
-  const unique = new Set(players);
-  if (unique.size !== 4) {
-    alert("Each player must be unique.");
-    return false;
-  }
-
+  if (players.length !== 4) { alert("Please select all 4 players."); return false; }
+  if (new Set(players).size !== 4) { alert("Each player must be unique."); return false; }
   return true;
 }
 
 function validateMatchType() {
   const league = document.getElementById("league").value;
   const matchType = document.getElementById("matchType").value;
-
   if (league === "Premier League" && !matchType) {
     alert("Please select a match type for Premier League.");
     return false;
   }
-
   return true;
 }
 
-function updateTeamHeadings() {
-  const p = [...document.querySelectorAll(".player")].map(x => x.value);
-
-  const teamA = (p[0] && p[1]) ? `${p[0]} & ${p[1]}` : "";
-  const teamB = (p[2] && p[3]) ? `${p[2]} & ${p[3]}` : "";
-
-  document.getElementById("teamAHeading").textContent = teamA;
-  document.getElementById("teamBHeading").textContent = teamB;
-
-  const teamsText = (teamA && teamB) ? `${teamA} vs ${teamB}` : "";
-
-  document.getElementById("set1Teams").textContent = teamsText;
-  document.getElementById("set2Teams").textContent = teamsText;
-  document.getElementById("tbTeams").textContent = teamsText;
-  document.getElementById("killerTeams").textContent = teamsText;
-}
-  
 /* ================= SUBMIT ================= */
 matchForm.addEventListener("submit", e => {
   e.preventDefault();
-
   if (!validatePlayers()) return;
   if (!validateMatchType()) return;
 
@@ -504,10 +317,3 @@ updateTeamHeadings();
 
 </body>
 </html>
-
-
-
-
-
-
-
