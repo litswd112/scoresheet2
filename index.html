@@ -346,7 +346,29 @@ document.getElementById("league").addEventListener("change", e => {
     matchType.value = "Standard Match Day";
   }
 });
-  
+
+/* ================= LOCK / RESET ================= */
+function lockForm() {
+  document.querySelectorAll("select,input,button").forEach(el => {
+    if (el.id !== "resetBtn") el.disabled = true;
+  });
+  submitBtn.textContent = "✓ Submitted";
+  resetBtn.style.display = "block";
+}
+
+function unlockForm() {
+  document.getElementById("matchForm").reset();
+  document.querySelectorAll("select,input,button").forEach(el => {
+    el.disabled = false;
+  });
+  submitBtn.textContent = "Submit Match";
+  resetBtn.style.display = "none";
+}
+
+resetBtn.addEventListener("click", unlockForm);
+
+
+
 /* ================= INIT ================= */
 populateScores();
 populateMatchDays();
@@ -355,4 +377,5 @@ loadPlayers();
 
 </body>
 </html>
+
 
