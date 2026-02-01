@@ -280,6 +280,7 @@ document.addEventListener("change", e => {
 });
 
 /* ================= ADD PLAYER ================= */
+
 function addPlayer() {
   const input = document.getElementById("newPlayer");
   const name = input.value.trim();
@@ -287,17 +288,24 @@ function addPlayer() {
 
   fetch(SCRIPT_URL, {
     method: "POST",
+    mode: "cors",  // IMPORTANT
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ action: "addPlayer", name })
   })
-    .then(r => r.json())
-    .then(updated => {
-      players = updated;
-      populatePlayers();
-      input.value = "";
-    });
-}
+  .then(async r => {
+    if (!r.ok) throw new Error("Network response was not ok");
 
+    const updated = await r.json();
+    players = updated;
+    populatePlayers();
+    input.value = "";
+  })
+  .catch(err => {
+    alert("Could not add player. Please check the web app deployment and permissions.");
+    console.error(err);
+  });
+}
+ 
 /* ================= SCORES & MATCH DAYS ================= */
 function populateScores() {
   document.querySelectorAll(".score7").forEach(sel => {
@@ -436,5 +444,6 @@ loadPlayers();
 
 </body>
 </html>
+
 
 
