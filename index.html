@@ -318,7 +318,7 @@ matchForm.addEventListener("submit", e => {
   const p = document.querySelectorAll(".player");
   const v = id => document.getElementById(id).value || "";
 
-  fetch("YOUR_WEB_APP_URL", {
+  fetch("https://script.google.com/macros/s/AKfycbxjz--3DwiXuBIDVZNcDl-CtlHbWdUFPqqu2DMWyMbdBobAkMTCzDve4KXvzh227m51/exec", {
     method: "POST",
     mode: "no-cors",
     headers: { "Content-Type": "application/json" },
@@ -351,3 +351,4 @@ populateMatchDays();
 
 </body>
 </html>
+
