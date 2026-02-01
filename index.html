@@ -224,41 +224,67 @@
 </form>
 
 <script>
-/* ================= PLAYERS ================= */
-let players = [
-  "Substitute Played","Adrian Muica","Alessandro Di Leo","Alfred Kennard",
-  "Andrew Gibbs","Andrew Judd","Andy Hannah","Antonios X","Barrie Chase",
-  "Ben Oakes","Bernard Van Zyl","Bertie Wildman","Bev Bray","Callum Moss",
-  "Callum Slater","Carl Basson","Colin Burnet","Damian Guitton","Dan Bowler",
-  "Danny Ashe","David Caddamy-Moat","Debbie Basson","Derek Purvis","Des McConnell",
-  "Elisa Aloisi","Fabio Di Primio","Francois Fracella","Fred Cooke",
-  "Gary Fernandes","Gary Treadwell","Gaynor Banninster","George Cowman",
-  "Giuseppe Sanfilippo","Glenn McClelland","Graeme Nott","Graham Francis",
-  "Hamraz K","Harry Melluish","Ian Jack","James Bird","James Hayter",
-  "James Issako","Jamie Broughton","Jamie Bull","Jane Pickard","Jason Piggott",
-  "Jemma Benstead","John Connolly","Johnathan Alveraz","Jolie May","Jon Broughton",
-  "Jordan Baker","Josh Steffen","Karen Ainsworth","Kath McConnell","Kemal Nafi",
-  "Lee Crisp","Lorenzo Zarrilli","Louise Jack","Luke Hayes","Margaret Power",
-  "Mario Panayiotou","Mark Ashwell","Mark Banninster","Mark Curtis","Mark Hoddle",
-  "Mark Slater","Mark Smith","Mark Sullivan","Martin King","Martin Gill",
-  "Mary Davidson","Matt Hardy","Matt Holland","Michael Hunter","Miles McClinton",
-  "Nick Ridgway","Nii Thompson","Norman Cleary","Paco Reyes","Paul Benfield",
-  "Paul Delaney","Pete Harris","Peter Aylott","Raul Urs","Rebecca Crisp",
-  "Richard Booth","Richard Millns","Richard O'Hara","Rob Bunting","Rob Kemp",
-  "Russell Way","Sam Gardiner","Sarah Kenworthy","Simon Layer","Simon Playfair",
-  "Simon Sale","Stacy Thompson","Stefan Masheder","Steff Burkwood",
-  "Stephen Aravela","Steve Beel","Steve Hogg","Sue Cryer","Tom Kirrage",
-  "Tom Trueman","Tom White","Zara Thompson","Zoe Burnet"
-];
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxjz--3DwiXuBIDVZNcDl-CtlHbWdUFPqqu2DMWyMbdBobAkMTCzDve4KXvzh227m51/exec";
 
-/* ================= POPULATE ================= */
+/* ================= LOAD PLAYERS ================= */
+let players = [];
+
+function loadPlayers() {
+  fetch(`${SCRIPT_URL}?action=players`)
+    .then(r => r.json())
+    .then(list => {
+      players = list;
+      populatePlayers();
+    });
+}
+
 function populatePlayers() {
   document.querySelectorAll(".player").forEach(sel => {
-    sel.innerHTML = "";
+    const current = sel.value;
+    sel.innerHTML = "<option value=''>Select player</option>";
     players.forEach(p => sel.add(new Option(p, p)));
+    sel.value = current;
   });
 }
 
+/* ================= DUPLICATE PROTECTION ================= */
+document.addEventListener("change", e => {
+  if (!e.target.classList.contains("player")) return;
+
+  const selections = [...document.querySelectorAll(".player")]
+    .map(s => s.value)
+    .filter(Boolean);
+
+  const duplicates = selections.filter(
+    (v, i, a) => a.indexOf(v) !== i
+  );
+
+  if (duplicates.length) {
+    alert("The same player cannot be selected twice.");
+    e.target.value = "";
+  }
+});
+
+/* ================= ADD PLAYER ================= */
+function addPlayer() {
+  const input = document.getElementById("newPlayer");
+  const name = input.value.trim();
+  if (!name) return;
+
+  fetch(SCRIPT_URL, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ action: "addPlayer", name })
+  })
+    .then(r => r.json())
+    .then(updated => {
+      players = updated;
+      populatePlayers();
+      input.value = "";
+    });
+}
+
+/* ================= SCORES & MATCH DAYS ================= */
 function populateScores() {
   document.querySelectorAll(".score7").forEach(sel => {
     sel.innerHTML = "<option value=''>–</option>";
@@ -274,41 +300,9 @@ function populateMatchDays() {
   const md = document.getElementById("matchDay");
   md.innerHTML = "<option value=''>Select match day</option>";
   const year = new Date().getFullYear();
-  ["January","February","March","April","May","June","July","August",
-   "September","October","November","December"]
-  .forEach(m => md.add(new Option(`${m} ${year}`, `${m} ${year}`)));
-}
-
-/* ================= LEAGUE LOGIC ================= */
-document.getElementById("league").addEventListener("change", e => {
-  document.getElementById("matchTypeWrapper").style.display =
-    e.target.value === "Premier League" ? "block" : "none";
-});
-
-/* ================= ADD PLAYER ================= */
-function addPlayer() {
-  const input = document.getElementById("newPlayer");
-  if (input.value.trim()) {
-    players.push(input.value.trim());
-    populatePlayers();
-    input.value = "";
-  }
-}
-
-/* ================= LOCK / RESET ================= */
-function lockForm() {
-  document.querySelectorAll("select,input,button").forEach(e => {
-    if (e.id !== "resetBtn") e.disabled = true;
-  });
-  submitBtn.textContent = "✓ Submitted";
-  resetBtn.style.display = "block";
-}
-
-function unlockForm() {
-  document.getElementById("matchForm").reset();
-  document.querySelectorAll("select,input,button").forEach(e => e.disabled = false);
-  submitBtn.textContent = "Submit Match";
-  resetBtn.style.display = "none";
+  ["January","February","March","April","May","June",
+   "July","August","September","October","November","December"]
+    .forEach(m => md.add(new Option(`${m} ${year}`, `${m} ${year}`)));
 }
 
 /* ================= SUBMIT ================= */
@@ -318,7 +312,7 @@ matchForm.addEventListener("submit", e => {
   const p = document.querySelectorAll(".player");
   const v = id => document.getElementById(id).value || "";
 
-  fetch("https://script.google.com/macros/s/AKfycbxjz--3DwiXuBIDVZNcDl-CtlHbWdUFPqqu2DMWyMbdBobAkMTCzDve4KXvzh227m51/exec", {
+  fetch(SCRIPT_URL, {
     method: "POST",
     mode: "no-cors",
     headers: { "Content-Type": "application/json" },
@@ -327,7 +321,7 @@ matchForm.addEventListener("submit", e => {
       league: v("league"),
       group: v("group"),
       matchType: v("matchType") || "Standard Match Day",
-      players: [p[0].value,p[1].value,p[2].value,p[3].value],
+      players: [p[0].value, p[1].value, p[2].value, p[3].value],
       finishedStatus: v("finishedStatus"),
       killerA: v("killerA"),
       killerB: v("killerB"),
@@ -341,14 +335,11 @@ matchForm.addEventListener("submit", e => {
   });
 });
 
-resetBtn.addEventListener("click", unlockForm);
-
 /* ================= INIT ================= */
-populatePlayers();
 populateScores();
 populateMatchDays();
+loadPlayers();
 </script>
 
 </body>
 </html>
-
