@@ -175,42 +175,44 @@
     <!-- SETS -->
     <div class="card">
       <h3>Set 1</h3>
-      <h3>Team A <span id="set1TeamAName"></span></h3>
-      <h3>Team B <span id="set1TeamBName"></span></h3>
+      <label>Team A <span id="s1aName"></span></label>
+<select id="s1a" class="score7"></select>
 
-      <label>Team A</label><select id="s1a" class="score7"></select>
-      <label>Team B</label><select id="s1b" class="score7"></select>
+<label>Team B <span id="s1bName"></span></label>
+<select id="s1b" class="score7"></select>
+
       <label>TB A</label><select id="s1tba" class="score20"></select>
       <label>TB B</label><select id="s1tbb" class="score20"></select>
     </div>
 
     <div class="card">
       <h3>Set 2</h3>
-      <h3>Team A <span id="set2TeamAName"></span></h3>
-      <h3>Team B <span id="set2TeamBName"></span></h3>
+<label>Team A <span id="s2aName"></span></label>
+<select id="s2a" class="score7"></select>
 
-      <label>Team A</label><select id="s2a" class="score7"></select>
-      <label>Team B</label><select id="s2b" class="score7"></select>
+<label>Team B <span id="s2bName"></span></label>
+<select id="s2b" class="score7"></select>
+
       <label>TB A</label><select id="s2tba" class="score20"></select>
       <label>TB B</label><select id="s2tbb" class="score20"></select>
     </div>
 
     <div class="card">
       <h3>Championship Tie Break</h3>
-      <h3>Team A <span id="tbTeamAName"></span></h3>
-      <h3>Team B <span id="tbTeamBName"></span></h3>
+       <label>Team A <span id="tbAName"></span></label>
+<select id="s3a" class="score20"></select>
 
-      <label>Team A</label><select id="s3a" class="score20"></select>
-      <label>Team B</label><select id="s3b" class="score20"></select>
+<label>Team B <span id="tbBName"></span></label>
+<select id="s3b" class="score20"></select>
     </div>
 
     <div class="card">
       <h3>Killer Points</h3>
-      <h3>Team A <span id="killerTeamAName"></span></h3>
-      <h3>Team B <span id="killerTeamBName"></span></h3>
+<label>Team A <span id="killerAName"></span></label>
+<select id="killerA" class="score20"></select>
 
-      <label>Team A</label><select id="killerA" class="score20"></select>
-      <label>Team B</label><select id="killerB" class="score20"></select>
+<label>Team B <span id="killerBName"></span></label>
+<select id="killerB" class="score20"></select>
     </div>
 
     <div class="card">
@@ -273,20 +275,22 @@ function updateTeamHeadings() {
   const teamA = (p[0] && p[1]) ? `${p[0]} & ${p[1]}` : "";
   const teamB = (p[2] && p[3]) ? `${p[2]} & ${p[3]}` : "";
 
+  // Existing headings
   document.getElementById("teamAName").textContent = teamA ? `- ${teamA}` : "";
   document.getElementById("teamBName").textContent = teamB ? `- ${teamB}` : "";
 
-  document.getElementById("set1TeamAName").textContent = teamA ? `- ${teamA}` : "";
-  document.getElementById("set1TeamBName").textContent = teamB ? `- ${teamB}` : "";
+  // New: set names next to labels in each section
+  document.getElementById("s1aName").textContent = teamA ? `- ${teamA}` : "";
+  document.getElementById("s1bName").textContent = teamB ? `- ${teamB}` : "";
 
-  document.getElementById("set2TeamAName").textContent = teamA ? `- ${teamA}` : "";
-  document.getElementById("set2TeamBName").textContent = teamB ? `- ${teamB}` : "";
+  document.getElementById("s2aName").textContent = teamA ? `- ${teamA}` : "";
+  document.getElementById("s2bName").textContent = teamB ? `- ${teamB}` : "";
 
-  document.getElementById("tbTeamAName").textContent = teamA ? `- ${teamA}` : "";
-  document.getElementById("tbTeamBName").textContent = teamB ? `- ${teamB}` : "";
+  document.getElementById("tbAName").textContent = teamA ? `- ${teamA}` : "";
+  document.getElementById("tbBName").textContent = teamB ? `- ${teamB}` : "";
 
-  document.getElementById("killerTeamAName").textContent = teamA ? `- ${teamA}` : "";
-  document.getElementById("killerTeamBName").textContent = teamB ? `- ${teamB}` : "";
+  document.getElementById("killerAName").textContent = teamA ? `- ${teamA}` : "";
+  document.getElementById("killerBName").textContent = teamB ? `- ${teamB}` : "";
 }
 
 document.addEventListener("change", e => {
@@ -438,3 +442,4 @@ updateTeamHeadings();
 
 </body>
 </html>
+
