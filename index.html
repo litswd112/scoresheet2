@@ -226,6 +226,11 @@
 <script>
 const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxjz--3DwiXuBIDVZNcDl-CtlHbWdUFPqqu2DMWyMbdBobAkMTCzDve4KXvzh227m51/exec";
 
+/* ================= ELEMENTS ================= */
+const matchForm = document.getElementById("matchForm");
+const submitBtn = document.getElementById("submitBtn");
+const resetBtn = document.getElementById("resetBtn");
+
 /* ================= LOAD PLAYERS ================= */
 let players = [];
 
@@ -305,87 +310,7 @@ function populateMatchDays() {
     .forEach(m => md.add(new Option(`${m} ${year}`, `${m} ${year}`)));
 }
 
-/* ================= SUBMIT ================= */
-matchForm.addEventListener("submit", e => {
-  e.preventDefault();
-
-  // ❌ stop submit if players invalid
-  if (!validatePlayers()) return;
-
-  // ❌ stop submit if match type invalid
-  if (!validateMatchType()) return;
-
-  // ✅ continue with submit
-  fetch(SCRIPT_URL, {
-    method: "POST",
-    mode: "no-cors",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      matchDay: document.getElementById("matchDay").value || "",
-      league: document.getElementById("league").value || "",
-      group: document.getElementById("group").value || "",
-      matchType: document.getElementById("matchType").value || "Standard Match Day",
-      players: [
-        document.querySelectorAll(".player")[0].value,
-        document.querySelectorAll(".player")[1].value,
-        document.querySelectorAll(".player")[2].value,
-        document.querySelectorAll(".player")[3].value
-      ],
-      finishedStatus: document.getElementById("finishedStatus").value || "",
-      killerA: document.getElementById("killerA").value || "",
-      killerB: document.getElementById("killerB").value || "",
-      s1: [
-        document.getElementById("s1a").value || "",
-        document.getElementById("s1b").value || "",
-        document.getElementById("s1tba").value || "",
-        document.getElementById("s1tbb").value || ""
-      ],
-      s2: [
-        document.getElementById("s2a").value || "",
-        document.getElementById("s2b").value || "",
-        document.getElementById("s2tba").value || "",
-        document.getElementById("s2tbb").value || ""
-      ],
-      s3: [
-        document.getElementById("s3a").value || "",
-        document.getElementById("s3b").value || ""
-      ]
-    })
-  }).then(() => {
-    alert("Match submitted successfully");
-    lockForm();
-  });
-});
-
-
-  if (!validatePlayers()) return;
-
-  const p = document.querySelectorAll(".player");
-  const v = id => document.getElementById(id).value || "";
-
-  fetch(SCRIPT_URL, {
-    method: "POST",
-    mode: "no-cors",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      matchDay: v("matchDay"),
-      league: v("league"),
-      group: v("group"),
-      matchType: v("matchType") || "Standard Match Day",
-      players: [p[0].value, p[1].value, p[2].value, p[3].value],
-      finishedStatus: v("finishedStatus"),
-      killerA: v("killerA"),
-      killerB: v("killerB"),
-      s1:[v("s1a"),v("s1b"),v("s1tba"),v("s1tbb")],
-      s2:[v("s2a"),v("s2b"),v("s2tba"),v("s2tbb")],
-      s3:[v("s3a"),v("s3b")]
-    })
-  }).then(() => {
-    alert("Match submitted successfully");
-    lockForm();
-  });
-});
-
+/* ================= MATCH TYPE TOGGLE ================= */
 document.getElementById("league").addEventListener("change", e => {
   const wrapper = document.getElementById("matchTypeWrapper");
   const matchType = document.getElementById("matchType");
@@ -418,6 +343,7 @@ function unlockForm() {
 
 resetBtn.addEventListener("click", unlockForm);
 
+/* ================= VALIDATION ================= */
 function validatePlayers() {
   const players = [...document.querySelectorAll(".player")]
     .map(s => s.value)
@@ -449,6 +375,41 @@ function validateMatchType() {
   return true;
 }
 
+/* ================= SUBMIT ================= */
+matchForm.addEventListener("submit", e => {
+  e.preventDefault();
+
+  if (!validatePlayers()) return;
+  if (!validateMatchType()) return;
+
+  submitBtn.disabled = true;
+  submitBtn.textContent = "Submitting…";
+
+  const p = document.querySelectorAll(".player");
+  const v = id => document.getElementById(id).value || "";
+
+  fetch(SCRIPT_URL, {
+    method: "POST",
+    mode: "no-cors",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      matchDay: v("matchDay"),
+      league: v("league"),
+      group: v("group"),
+      matchType: v("matchType") || "Standard Match Day",
+      players: [p[0].value, p[1].value, p[2].value, p[3].value],
+      finishedStatus: v("finishedStatus"),
+      killerA: v("killerA"),
+      killerB: v("killerB"),
+      s1:[v("s1a"),v("s1b"),v("s1tba"),v("s1tbb")],
+      s2:[v("s2a"),v("s2b"),v("s2tba"),v("s2tbb")],
+      s3:[v("s3a"),v("s3b")]
+    })
+  }).then(() => {
+    alert("Match submitted successfully");
+    lockForm();
+  });
+});
 
 /* ================= INIT ================= */
 populateScores();
@@ -458,6 +419,7 @@ loadPlayers();
 
 </body>
 </html>
+
 
 
 
