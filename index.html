@@ -248,11 +248,12 @@ function populatePlayers() {
     const current = sel.value;
 
     // Sort alphabetically but keep "Substitute" at the top
-    const sorted = [...players].sort((a, b) => {
-      if (a === "Substitute") return -1;
-      if (b === "Substitute") return 1;
-      return a.localeCompare(b);
-    });
+   const sorted = ["Substitute", ...players.filter(p => p !== "Substitute")]
+  .sort((a, b) => {
+    if (a === "Substitute") return -1;
+    if (b === "Substitute") return 1;
+    return a.localeCompare(b);
+  });
 
     sel.innerHTML = "<option value=''>Select player</option>";
     sorted.forEach(p => sel.add(new Option(p, p)));
@@ -288,23 +289,22 @@ function addPlayer() {
 
   fetch(SCRIPT_URL, {
     method: "POST",
-    mode: "cors",  // IMPORTANT
+    mode: "no-cors",     // <--- IMPORTANT
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ action: "addPlayer", name })
   })
-  .then(async r => {
-    if (!r.ok) throw new Error("Network response was not ok");
-
-    const updated = await r.json();
-    players = updated;
-    populatePlayers();
+  .then(() => {
+    // Refresh player list after adding
+    loadPlayers();
     input.value = "";
+    alert("Player added successfully");
   })
   .catch(err => {
-    alert("Could not add player. Please check the web app deployment and permissions.");
+    alert("Could not add player. Please check the web app deployment.");
     console.error(err);
   });
 }
+
  
 /* ================= SCORES & MATCH DAYS ================= */
 function populateScores() {
@@ -444,6 +444,7 @@ loadPlayers();
 
 </body>
 </html>
+
 
 
 
