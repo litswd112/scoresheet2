@@ -157,7 +157,7 @@
     <h3>Add New Player</h3>
     <div class="grid-2">
       <input type="text" id="newPlayer" placeholder="Player name">
-      <button type="button" class="btn secondary" onclick="addPlayer()">Add</button>
+<button type="button" class="btn secondary" id="addPlayerBtn" onclick="addPlayer()">Add</button>
     </div>
   </div>
 
@@ -326,20 +326,28 @@ document.getElementById("league").addEventListener("change", e => {
 /* ================= LOCK / RESET ================= */
 function lockForm() {
   document.querySelectorAll("select,input,button").forEach(el => {
-    if (el.id !== "resetBtn") el.disabled = true;
+    // Keep reset + add player buttons enabled
+    if (el.id !== "resetBtn" && el.id !== "addPlayerBtn") {
+      el.disabled = true;
+    }
   });
+
   submitBtn.textContent = "✓ Submitted";
   resetBtn.style.display = "block";
 }
 
 function unlockForm() {
   document.getElementById("matchForm").reset();
+
+  // Re-enable everything
   document.querySelectorAll("select,input,button").forEach(el => {
     el.disabled = false;
   });
+
   submitBtn.textContent = "Submit Match";
   resetBtn.style.display = "none";
 }
+
 
 resetBtn.addEventListener("click", unlockForm);
 
@@ -419,7 +427,4 @@ loadPlayers();
 
 </body>
 </html>
-
-
-
 
