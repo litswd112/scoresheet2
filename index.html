@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+Ok what I will do is post my web apps code here <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -250,10 +250,6 @@ function loadPlayers() {
     .then(list => {
       players = list;
       populatePlayers();
-    })
-    .catch(err => {
-      console.error("Failed to load players:", err);
-      alert("Failed to load players. Check console for details.");
     });
 }
 
@@ -317,16 +313,21 @@ function addPlayer() {
   const name = input.value.trim();
   if (!name) return;
 
+  // ✅ Option 1: GET request (no CORS)
   fetch(`${SCRIPT_URL}?action=addPlayer&name=${encodeURIComponent(name)}`)
-    .then(r => r.json())
-    .then(() => {
-      loadPlayers();
-      input.value = "";
-      alert("Player added");
+    .then(res => res.json())
+    .then(data => {
+      if (data.status === "ok") {
+        loadPlayers();
+        input.value = "";
+        alert("Player added successfully");
+      } else {
+        alert("Could not add player. Please check the web app deployment.");
+      }
     })
     .catch(err => {
-      console.error("Add player failed:", err);
-      alert("Failed to add player. Check console for details.");
+      alert("Could not add player. Please check the web app deployment.");
+      console.error(err);
     });
 }
 
@@ -408,51 +409,34 @@ matchForm.addEventListener("submit", e => {
   const p = document.querySelectorAll(".player");
   const v = id => document.getElementById(id).value || "";
 
-  const payload = {
-    matchDay: v("matchDay"),
-    league: v("league"),
-    group: v("group"),
-    matchType: v("matchType") || "Standard Match Day",
-    players: [p[0].value, p[1].value, p[2].value, p[3].value],
-    finishedStatus: v("finishedStatus"),
-    killerA: v("killerA"),
-    killerB: v("killerB"),
-    s1:[v("s1a"),v("s1b"),v("s1tba"),v("s1tbb")],
-    s2:[v("s2a"),v("s2b"),v("s2tba"),v("s2tbb")],
-    s3:[v("s3a"),v("s3b")]
-  };
-
   fetch(SCRIPT_URL, {
     method: "POST",
+    mode: "no-cors",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(payload)
-  })
-  .then(async res => {
-    const text = await res.text();
-    const json = JSON.parse(text);
-    if (json.status === "error") throw new Error(json.message);
-    return json;
-  })
-  .then(data => {
-    const link = document.createElement("a");
-    link.href = data.imageUrl;
-    link.download = "match-result.jpg";
-    link.click();
+    body: JSON.stringify({
+      matchDay: v("matchDay"),
+      league: v("league"),
+      group: v("group"),
+      matchType: v("matchType") || "Standard Match Day",
+      players: [p[0].value, p[1].value, p[2].value, p[3].value],
+      finishedStatus: v("finishedStatus"),
+      killerA: v("killerA"),
+      killerB: v("killerB"),
+      s1:[v("s1a"),v("s1b"),v("s1tba"),v("s1tbb")],
+      s2:[v("s2a"),v("s2b"),v("s2tba"),v("s2tbb")],
+      s3:[v("s3a"),v("s3b")]
+    })
+  }).then(() => {
+    alert("Match submitted successfully");
     lockForm();
-  })
-  .catch(err => {
-    console.error("Submit failed:", err);
-    alert("Submit failed: " + err.message);
-    submitBtn.disabled = false;
-    submitBtn.textContent = "Submit Match";
   });
 });
-
 
 populateScores();
 populateMatchDays();
 loadPlayers();
 updateTeamHeadings();
+
 </script>
 
 </body>
