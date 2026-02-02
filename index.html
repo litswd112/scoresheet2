@@ -315,20 +315,34 @@ function addPlayer() {
 
   // ✅ Option 1: GET request (no CORS)
   fetch(`${SCRIPT_URL}?action=addPlayer&name=${encodeURIComponent(name)}`)
-    .then(res => res.json())
-    .then(data => {
-      if (data.status === "ok") {
-        loadPlayers();
-        input.value = "";
-        alert("Player added successfully");
-      } else {
-        alert("Could not add player. Please check the web app deployment.");
-      }
-    })
-    .catch(err => {
-      alert("Could not add player. Please check the web app deployment.");
-      console.error(err);
-    });
+   .then(async res => {
+  const text = await res.text();
+  try {
+    return JSON.parse(text);
+  } catch (e) {
+    console.error("Raw response:", text);
+    throw new Error("Invalid JSON returned from server");
+  }
+})
+.then(data => {
+  if (data.status !== "ok") {
+    throw new Error(data.message || "Server error");
+  }
+
+  const link = document.createElement("a");
+  link.href = data.imageUrl;
+  link.download = "match-result.jpg";
+  link.click();
+
+  lockForm();
+})
+.catch(err => {
+  console.error(err);
+  alert("Submission failed: " + err.message);
+  submitBtn.disabled = false;
+  submitBtn.textContent = "Submit Match";
+});
+
 }
 
 function populateScores() {
@@ -450,5 +464,6 @@ updateTeamHeadings();
 
 </body>
 </html>
+
 
 
