@@ -246,8 +246,12 @@ let players = [];
 
 function loadPlayers() {
   fetch(`${SCRIPT_URL}?action=players`)
-    .then(r => r.json())
+    .then(r => {
+      console.log("Players response status:", r.status);
+      return r.json();
+    })
     .then(list => {
+      console.log("Players list returned:", list);
       players = list;
       populatePlayers();
     })
@@ -459,6 +463,7 @@ updateTeamHeadings();
 
 </body>
 </html>
+
 
 
 
