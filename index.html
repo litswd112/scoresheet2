@@ -250,6 +250,10 @@ function loadPlayers() {
     .then(list => {
       players = list;
       populatePlayers();
+    })
+    .catch(err => {
+      console.error("Failed to load players:", err);
+      alert("Failed to load players. Check console for details.");
     });
 }
 
@@ -319,23 +323,11 @@ function addPlayer() {
       loadPlayers();
       input.value = "";
       alert("Player added");
+    })
+    .catch(err => {
+      console.error("Add player failed:", err);
+      alert("Failed to add player. Check console for details.");
     });
-}
-
-  const link = document.createElement("a");
-  link.href = data.imageUrl;
-  link.download = "match-result.jpg";
-  link.click();
-
-  lockForm();
-})
-.catch(err => {
-  console.error(err);
-  alert("Submission failed: " + err.message);
-  submitBtn.disabled = false;
-  submitBtn.textContent = "Submit Match";
-});
-
 }
 
 function populateScores() {
@@ -416,49 +408,45 @@ matchForm.addEventListener("submit", e => {
   const p = document.querySelectorAll(".player");
   const v = id => document.getElementById(id).value || "";
 
-fetch(SCRIPT_URL, {
-  method: "POST",
-  headers: { "Content-Type": "application/json" },
-  body: JSON.stringify({
-    matchDay: v("matchDay"),
-    league: v("league"),
-    group: v("group"),
-    matchType: v("matchType") || "Standard Match Day",
-    players: [p[0].value, p[1].value, p[2].value, p[3].value],
-    finishedStatus: v("finishedStatus"),
-    killerA: v("killerA"),
-    killerB: v("killerB"),
-    s1:[v("s1a"),v("s1b"),v("s1tba"),v("s1tbb")],
-    s2:[v("s2a"),v("s2b"),v("s2tba"),v("s2tbb")],
-    s3:[v("s3a"),v("s3b")]
+  fetch(SCRIPT_URL, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      matchDay: v("matchDay"),
+      league: v("league"),
+      group: v("group"),
+      matchType: v("matchType") || "Standard Match Day",
+      players: [p[0].value, p[1].value, p[2].value, p[3].value],
+      finishedStatus: v("finishedStatus"),
+      killerA: v("killerA"),
+      killerB: v("killerB"),
+      s1:[v("s1a"),v("s1b"),v("s1tba"),v("s1tbb")],
+      s2:[v("s2a"),v("s2b"),v("s2tba"),v("s2tbb")],
+      s3:[v("s3a"),v("s3b")]
+    })
   })
-})
-.then(res => res.json())
-.then(data => {
-  const link = document.createElement("a");
-  link.href = data.imageUrl;
-  link.download = "match-result.jpg";
-  link.click();
-  lockForm();
-})
-.catch(err => {
-  alert("Error submitting");
-  submitBtn.disabled = false;
-});
-
+  .then(res => res.json())
+  .then(data => {
+    const link = document.createElement("a");
+    link.href = data.imageUrl;
+    link.download = "match-result.jpg";
+    link.click();
+    lockForm();
+  })
+  .catch(err => {
+    console.error("Submit failed:", err);
+    alert("Error submitting");
+    submitBtn.disabled = false;
+    submitBtn.textContent = "Submit Match";
+  });
 });
 
 populateScores();
 populateMatchDays();
 loadPlayers();
 updateTeamHeadings();
-
 </script>
 
 </body>
 </html>
-
-
-
-
 
