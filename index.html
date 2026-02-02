@@ -408,24 +408,31 @@ matchForm.addEventListener("submit", e => {
   const p = document.querySelectorAll(".player");
   const v = id => document.getElementById(id).value || "";
 
+  const payload = {
+    matchDay: v("matchDay"),
+    league: v("league"),
+    group: v("group"),
+    matchType: v("matchType") || "Standard Match Day",
+    players: [p[0].value, p[1].value, p[2].value, p[3].value],
+    finishedStatus: v("finishedStatus"),
+    killerA: v("killerA"),
+    killerB: v("killerB"),
+    s1:[v("s1a"),v("s1b"),v("s1tba"),v("s1tbb")],
+    s2:[v("s2a"),v("s2b"),v("s2tba"),v("s2tbb")],
+    s3:[v("s3a"),v("s3b")]
+  };
+
   fetch(SCRIPT_URL, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      matchDay: v("matchDay"),
-      league: v("league"),
-      group: v("group"),
-      matchType: v("matchType") || "Standard Match Day",
-      players: [p[0].value, p[1].value, p[2].value, p[3].value],
-      finishedStatus: v("finishedStatus"),
-      killerA: v("killerA"),
-      killerB: v("killerB"),
-      s1:[v("s1a"),v("s1b"),v("s1tba"),v("s1tbb")],
-      s2:[v("s2a"),v("s2b"),v("s2tba"),v("s2tbb")],
-      s3:[v("s3a"),v("s3b")]
-    })
+    body: JSON.stringify(payload)
   })
-  .then(res => res.json())
+  .then(async res => {
+    const text = await res.text();
+    const json = JSON.parse(text);
+    if (json.status === "error") throw new Error(json.message);
+    return json;
+  })
   .then(data => {
     const link = document.createElement("a");
     link.href = data.imageUrl;
@@ -435,11 +442,12 @@ matchForm.addEventListener("submit", e => {
   })
   .catch(err => {
     console.error("Submit failed:", err);
-    alert("Error submitting");
+    alert("Submit failed: " + err.message);
     submitBtn.disabled = false;
     submitBtn.textContent = "Submit Match";
   });
 });
+
 
 populateScores();
 populateMatchDays();
@@ -449,4 +457,5 @@ updateTeamHeadings();
 
 </body>
 </html>
+
 
