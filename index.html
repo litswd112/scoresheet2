@@ -313,21 +313,14 @@ function addPlayer() {
   const name = input.value.trim();
   if (!name) return;
 
-  // ✅ Option 1: GET request (no CORS)
   fetch(`${SCRIPT_URL}?action=addPlayer&name=${encodeURIComponent(name)}`)
-   .then(async res => {
-  const text = await res.text();
-  try {
-    return JSON.parse(text);
-  } catch (e) {
-    console.error("Raw response:", text);
-    throw new Error("Invalid JSON returned from server");
-  }
-})
-.then(data => {
-  if (data.status !== "ok") {
-    throw new Error(data.message || "Server error");
-  }
+    .then(r => r.json())
+    .then(() => {
+      loadPlayers();
+      input.value = "";
+      alert("Player added");
+    });
+}
 
   const link = document.createElement("a");
   link.href = data.imageUrl;
@@ -464,6 +457,7 @@ updateTeamHeadings();
 
 </body>
 </html>
+
 
 
 
