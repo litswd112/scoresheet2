@@ -250,6 +250,10 @@ function loadPlayers() {
     .then(list => {
       players = list;
       populatePlayers();
+    })
+    .catch(err => {
+      console.error("Players fetch failed", err);
+      alert("Could not load players. Check deployment URL and permissions.");
     });
 }
 
@@ -411,7 +415,6 @@ matchForm.addEventListener("submit", e => {
 
   fetch(SCRIPT_URL, {
     method: "POST",
-    mode: "no-cors",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
       matchDay: v("matchDay"),
@@ -426,11 +429,26 @@ matchForm.addEventListener("submit", e => {
       s2:[v("s2a"),v("s2b"),v("s2tba"),v("s2tbb")],
       s3:[v("s3a"),v("s3b")]
     })
-  }).then(() => {
-    alert("Match submitted successfully");
-    lockForm();
+  })
+  .then(res => res.json())
+  .then(data => {
+    if (data.status === "ok") {
+      alert("Match submitted successfully");
+      lockForm();
+    } else {
+      alert("Submission failed: " + data.message);
+      submitBtn.disabled = false;
+      submitBtn.textContent = "Submit Match";
+    }
+  })
+  .catch(err => {
+    alert("Error submitting match");
+    console.error(err);
+    submitBtn.disabled = false;
+    submitBtn.textContent = "Submit Match";
   });
 });
+
 
 populateScores();
 populateMatchDays();
@@ -441,4 +459,5 @@ updateTeamHeadings();
 
 </body>
 </html>
+
 
