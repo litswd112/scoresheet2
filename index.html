@@ -409,28 +409,36 @@ matchForm.addEventListener("submit", e => {
   const p = document.querySelectorAll(".player");
   const v = id => document.getElementById(id).value || "";
 
-  fetch(SCRIPT_URL, {
-    method: "POST",
-    mode: "no-cors",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      matchDay: v("matchDay"),
-      league: v("league"),
-      group: v("group"),
-      matchType: v("matchType") || "Standard Match Day",
-      players: [p[0].value, p[1].value, p[2].value, p[3].value],
-      finishedStatus: v("finishedStatus"),
-      killerA: v("killerA"),
-      killerB: v("killerB"),
-      s1:[v("s1a"),v("s1b"),v("s1tba"),v("s1tbb")],
-      s2:[v("s2a"),v("s2b"),v("s2tba"),v("s2tbb")],
-      s3:[v("s3a"),v("s3b")]
-    })
-  }).then(() => {
-    alert("Match submitted successfully");
-    lockForm();
-  });
+fetch(SCRIPT_URL, {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({
+    matchDay: v("matchDay"),
+    league: v("league"),
+    group: v("group"),
+    matchType: v("matchType") || "Standard Match Day",
+    players: [p[0].value, p[1].value, p[2].value, p[3].value],
+    finishedStatus: v("finishedStatus"),
+    killerA: v("killerA"),
+    killerB: v("killerB"),
+    s1:[v("s1a"),v("s1b"),v("s1tba"),v("s1tbb")],
+    s2:[v("s2a"),v("s2b"),v("s2tba"),v("s2tbb")],
+    s3:[v("s3a"),v("s3b")]
+  })
+})
+.then(res => res.json())
+.then(data => {
+  const link = document.createElement("a");
+  link.href = data.imageUrl;
+  link.download = "match-result.jpg";
+  link.click();
+  lockForm();
+})
+.catch(err => {
+  alert("Error submitting");
+  submitBtn.disabled = false;
 });
+
 
 populateScores();
 populateMatchDays();
@@ -441,3 +449,4 @@ updateTeamHeadings();
 
 </body>
 </html>
+
