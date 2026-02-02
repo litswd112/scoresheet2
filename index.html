@@ -417,9 +417,13 @@ matchForm.addEventListener("submit", e => {
     finishedStatus: v("finishedStatus"),
     killerA: v("killerA"),
     killerB: v("killerB"),
-    s1:[v("s1a"),v("s1b"),v("s1tba"),v("s1tbb")],
-    s2:[v("s2a"),v("s2b"),v("s2tba"),v("s2tbb")],
-    s3:[v("s3a"),v("s3b")]
+    s1: [v("s1a"), v("s1b")],
+    s2: [v("s2a"), v("s2b")],
+    s3: [v("s3a"), v("s3b")],
+    s1tba: v("s1tba"),
+    s1tbb: v("s1tbb"),
+    s2tba: v("s2tba"),
+    s2tbb: v("s2tbb")
   };
 
   fetch(SCRIPT_URL, {
@@ -457,5 +461,3 @@ updateTeamHeadings();
 
 </body>
 </html>
-
-
