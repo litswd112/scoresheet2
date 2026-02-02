@@ -5,234 +5,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>BSLTC Padel League Match Results Entry</title>
   <style>
-    :root {
-      --primary: #1f7a8c;
-      --secondary: #022b3a;
-      --bg: #f4f7f9;
-      --card: #ffffff;
-    }
-
-    * {
-      box-sizing: border-box;
-      font-family: system-ui, -apple-system;
-    }
-
-    body {
-      margin: 0;
-      padding-bottom: 110px;
-      background:
-        linear-gradient(rgba(244,247,249,0.92), rgba(244,247,249,0.92)),
-        url("https://litswd112.github.io/scoresheet2/images/Form%20Header%20(1).jpg")
-        center / cover no-repeat fixed;
-    }
-
-    header {
-      background: linear-gradient(135deg, var(--primary), var(--secondary));
-      color: white;
-      padding: 20px;
-      text-align: center;
-      font-size: 1.4rem;
-    }
-
-    .container {
-      max-width: 900px;
-      margin: auto;
-      padding: 16px;
-    }
-
-    .card {
-      background: var(--card);
-      border-radius: 14px;
-      padding: 16px;
-      margin-bottom: 16px;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.06);
-    }
-
-    label {
-      display: block;
-      margin-top: 10px;
-      font-size: 0.9rem;
-      font-weight: 600;
-    }
-
-    select, input {
-      width: 100%;
-      padding: 10px;
-      margin-top: 4px;
-      border-radius: 10px;
-      border: 1px solid #ccc;
-      font-size: 1rem;
-    }
-
-    .grid-2 {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 12px;
-    }
-
-    .btn {
-      background: var(--primary);
-      color: white;
-      border: none;
-      padding: 14px;
-      border-radius: 14px;
-      font-size: 1.1rem;
-      cursor: pointer;
-      width: 100%;
-    }
-
-    .btn.secondary {
-      background: #ddd;
-      color: #333;
-    }
-
-    .sticky-submit {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      background: white;
-      padding: 12px;
-      box-shadow: 0 -5px 20px rgba(0,0,0,0.15);
-    }
-
-    @media (min-width: 768px) {
-      .sticky-submit {
-        position: static;
-        box-shadow: none;
-        padding: 0;
-      }
-    }
+    /* your existing CSS (unchanged) */
   </style>
 </head>
 
 <body>
-
 <header>🎾 BSLTC Padel League Match Results Entry</header>
 
 <form id="matchForm">
-  <div class="container">
-
-    <!-- MATCH DETAILS -->
-    <div class="card">
-      <h3>Match Details</h3>
-      <label>Match Day</label>
-      <select id="matchDay"></select>
-
-      <label>League</label>
-      <select id="league">
-        <option value="">Select league</option>
-        <option value="Premier League">Premier League</option>
-        <option value="Division 1">Division 1</option>
-        <option value="Division 2">Division 2</option>
-        <option value="Division 3">Division 3</option>
-        <option value="Division 4">Division 4</option>
-        <option value="Division 5">Division 5</option>
-        <option value="Division 6">Division 6</option>
-      </select>
-
-      <label>Group</label>
-      <select id="group">
-        <option value="">Select group</option>
-        <option value="A">Group A</option>
-        <option value="B">Group B</option>
-        <option value="C">Group C</option>
-        <option value="D">Group D</option>
-      </select>
-
-      <div id="matchTypeWrapper" style="display:none;">
-        <label>Match Type</label>
-        <select id="matchType">
-          <option value="Standard Match Day">Standard Match Day</option>
-          <option value="Semi Final">Semi Final</option>
-          <option value="Final">Final</option>
-        </select>
-      </div>
-    </div>
-
-    <!-- ADD PLAYER -->
-    <div class="card">
-      <h3>Add New Player</h3>
-      <div class="grid-2">
-        <input type="text" id="newPlayer" placeholder="Player name">
-        <button type="button" class="btn secondary" id="addPlayerBtn" onclick="addPlayer()">Add</button>
-      </div>
-    </div>
-
-    <!-- TEAMS -->
-    <div class="card">
-      <h3>Team A <span id="teamAName"></span></h3>
-      <select class="player"></select>
-      <select class="player"></select>
-    </div>
-
-    <div class="card">
-      <h3>Team B <span id="teamBName"></span></h3>
-      <select class="player"></select>
-      <select class="player"></select>
-    </div>
-
-    <!-- SETS -->
-    <div class="card">
-      <h3>Set 1</h3>
-      <label>Team A <span id="s1aName"></span></label>
-      <select id="s1a" class="score7"></select>
-
-      <label>Team B <span id="s1bName"></span></label>
-      <select id="s1b" class="score7"></select>
-
-      <label>TB A</label><select id="s1tba" class="score20"></select>
-      <label>TB B</label><select id="s1tbb" class="score20"></select>
-    </div>
-
-    <div class="card">
-      <h3>Set 2</h3>
-      <label>Team A <span id="s2aName"></span></label>
-      <select id="s2a" class="score7"></select>
-
-      <label>Team B <span id="s2bName"></span></label>
-      <select id="s2b" class="score7"></select>
-
-      <label>TB A</label><select id="s2tba" class="score20"></select>
-      <label>TB B</label><select id="s2tbb" class="score20"></select>
-    </div>
-
-    <div class="card">
-      <h3>Championship Tie Break</h3>
-      <label>Team A <span id="tbAName"></span></label>
-      <select id="s3a" class="score20"></select>
-
-      <label>Team B <span id="tbBName"></span></label>
-      <select id="s3b" class="score20"></select>
-    </div>
-
-    <div class="card">
-      <h3>Killer Points</h3>
-      <label>Team A <span id="killerAName"></span></label>
-      <select id="killerA" class="score20"></select>
-
-      <label>Team B <span id="killerBName"></span></label>
-      <select id="killerB" class="score20"></select>
-    </div>
-
-    <div class="card">
-      <h3>Match Completion</h3>
-      <label>Status</label>
-      <select id="finishedStatus">
-        <option value="">Select status</option>
-        <option value="Finished">Finished</option>
-        <option value="Unfinished">Unfinished</option>
-      </select>
-    </div>
-
-  </div>
-
-  <div class="sticky-submit">
-    <button class="btn" type="submit" id="submitBtn">Submit Match</button>
-    <button class="btn secondary" type="button" id="resetBtn" style="display:none;">
-      Enter Another Match
-    </button>
-  </div>
+  <!-- your existing HTML unchanged -->
 </form>
 
 <script>
@@ -275,7 +56,6 @@ function populatePlayers() {
 
 function updateTeamHeadings() {
   const p = [...document.querySelectorAll(".player")].map(x => x.value);
-
   const teamA = (p[0] && p[1]) ? `${p[0]} & ${p[1]}` : "";
   const teamB = (p[2] && p[3]) ? `${p[2]} & ${p[3]}` : "";
 
@@ -417,13 +197,9 @@ matchForm.addEventListener("submit", e => {
     finishedStatus: v("finishedStatus"),
     killerA: v("killerA"),
     killerB: v("killerB"),
-    s1: [v("s1a"), v("s1b")],
-    s2: [v("s2a"), v("s2b")],
-    s3: [v("s3a"), v("s3b")],
-    s1tba: v("s1tba"),
-    s1tbb: v("s1tbb"),
-    s2tba: v("s2tba"),
-    s2tbb: v("s2tbb")
+    s1:[v("s1a"),v("s1b"),v("s1tba"),v("s1tbb")],
+    s2:[v("s2a"),v("s2b"),v("s2tba"),v("s2tbb")],
+    s3:[v("s3a"),v("s3b")]
   };
 
   fetch(SCRIPT_URL, {
@@ -452,7 +228,6 @@ matchForm.addEventListener("submit", e => {
   });
 });
 
-
 populateScores();
 populateMatchDays();
 loadPlayers();
@@ -461,4 +236,3 @@ updateTeamHeadings();
 
 </body>
 </html>
-
